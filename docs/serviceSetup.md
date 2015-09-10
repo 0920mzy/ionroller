@@ -220,5 +220,6 @@ Edit Trust Relationship for ionroller role: paste the policy:
 
 *IONROLLER_ACCOUNT_ID:* the AWS account id where ION-Roller service runs
 
-Now you can proceed with [deploying services](deployingServices.md).
 Mind that `"aws_account_id":"<AWS_ACCOUNT_ID>"` in your service config should now point the new AWS account. 
+
+Now you can proceed with [deploying services](deployingServices.md).
