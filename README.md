@@ -24,7 +24,7 @@ ionroller release my-service 0.0.1
 
 ### Check out the [demo](https://drive.google.com/file/d/0B4LFRaB4aCbcRFRra0JOcUJnRVk/view?usp=sharing)!
 
-<iframe src="https://drive.google.com/file/d/0B4LFRaB4aCbcRFRra0JOcUJnRVk/preview" width="640" height="480"></iframe>
+<a href ="https://drive.google.com/file/d/0B4LFRaB4aCbcRFRra0JOcUJnRVk/view?usp=sharing">![Demo](docs/images/ui-demo.png)</a>
 
 
 For a more thorough explanation of motivation and the concepts behind ION-Roller check [InfoQ article] (http://www.infoq.com/articles/gilt-deploying-microservices-aws).
