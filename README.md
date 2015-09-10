@@ -1,3 +1,4 @@
+[![Circle CI](https://circleci.com/gh/gilt/ionroller.svg?style=svg)](https://circleci.com/gh/gilt/ionroller)
 # ION-Roller: AWS Immutable Deployment framework for web services
 
 ION-Roller is a service (API, web app and CLI tool) that leverages Amazon’s Elastic Beanstalk and underlying CloudFormation framework capabilities to deploy Docker images to EC2 instances.
