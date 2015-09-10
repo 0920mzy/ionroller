@@ -1,16 +1,34 @@
-# ION-Roller
-AWS Immutable Deployment framework for web services
+# ION-Roller: AWS Immutable Deployment framework for web services
 
-# Introduction
-ION-Roller is a service that manages the lifecycle of web services in AWS,
-providing a deployment system that supports "immutable environments", where
-the new environment is set up without tearing down the old environment in the
-process.
+ION-Roller is a service (API, web app and CLI tool) that leverages Amazon’s Elastic Beanstalk and underlying CloudFormation framework capabilities to deploy Docker images to EC2 instances.
 
-Traffic is then gradually migrated between the systems.
+## Features
 
-We plan to release the software as open-source in early June 2015.
+ - Automated resource management
+ - Safe immutable deployments
+ - Do healthchecks, move traffic to new deployment
+ - Phased rollout
+ - Provides fast rollback (old version still deployed)
+ - Visibility
+   * All releases/rollbacks/changes to envs are logged
+   * Current state visible to everybody on team
+ - Independent of language & dev environment (Docker!)
+ - Deployment configuration management (and history tracking)
+ - ‘Testing in production’ easy to implement
 
-See [this InfoQ article](http://www.infoq.com/articles/gilt-deploying-microservices-aws) for
-more details on the goals and design of the system.
+For a more thorough explanation of motivation and the concepts behind ION-Roller check [InfoQ article] (http://www.infoq.com/articles/gilt-deploying-microservices-aws).
+
+```bash
+ionroller release my-service 0.0.1
+```
+
+----------
+
+ - [Getting Started] (docs/gettingStarted.md)
+ - [Setting up ION-Roller](docs/serviceSetup.md)
+ - [Deploying services] (docs/deployingServices.md)
+ - [Traffic redirection] (docs/trafficRedirection.md)
+ - [Development](docs/development.md)
+ - [REST API - Apidoc](http://www.apidoc.me/gilt/ionroller-api)
+
 

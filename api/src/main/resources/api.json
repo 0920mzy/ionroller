@@ -1,0 +1,494 @@
+{
+  "name": "Ionroller API",
+  "headers": [
+    {
+      "name": "User",
+      "type": "string",
+      "required": true,
+      "description": "Identity of the user who starts a new release, drops env or updates config."
+    }
+  ],
+  "base_url": "http://ionroller.gilt.com",
+  "apidoc": {
+    "version": "0.9.6"
+  },
+  "description": "Software Delivery System for Docker Images",
+  "resources": {
+    "service": {
+      "operations": [
+        {
+          "method": "GET",
+          "responses": {
+            "200": {
+              "type": "[service]"
+            }
+          },
+          "description": "Lists all services"
+        },
+        {
+          "method": "GET",
+          "path": "/:serviceName",
+          "responses": {
+            "200": {
+              "type": "service"
+            }
+          },
+          "description": "Returns service state (current and desired)"
+        },
+        {
+          "method": "PUT",
+          "path": "/:serviceName/config",
+          "body": {
+            "type": "service_config"
+          },
+          "description": "Creates or updates service configuration"
+        },
+        {
+          "method": "GET",
+          "path": "/:serviceName/configs",
+          "responses": {
+            "200": {
+              "type": "[service_config]"
+            }
+          },
+          "parameters": [
+              {
+                "name": "from",
+                "type": "date-time-iso8601",
+                "description": "Find configurations created after this date.",
+                "required": false
+              },
+              {
+                "name": "to",
+                "type": "date-time-iso8601",
+                "description": "Find configurations created before this date.",
+                "required": false
+              }
+           ],
+          "description": "Returns service configuration (all versions over time)"
+        },
+        {
+          "method": "GET",
+          "path": "/:serviceName/config",
+          "responses": {
+            "200": {
+              "type": "service_config"
+            }
+          },
+          "description": "Returns latest service configuration "
+        },
+        {
+          "method": "GET",
+          "path": "/:serviceName/configs/:timestamp",
+          "parameters": [
+            {
+              "name": "timestamp",
+              "type": "date-time-iso8601",
+              "description": "Configuration timestamp",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "service_config"
+            }
+          },
+          "description": "Returns service configuration for specified timestamp"
+        },
+        {
+          "method": "DELETE",
+          "path": "/:serviceName/config",
+          "responses": {
+            "204": {
+              "type": "unit"
+            }
+          },
+          "description": "Removes service configuration (all versions) if no version is currently deployed"
+        },
+        {
+          "method": "POST",
+          "path": "/:serviceName/release",
+          "parameters": [
+            {
+              "name": "version",
+              "type": "string"
+            },
+            {
+              "name": "config",
+              "type": "date-time-iso8601",
+              "description": "Configuration timestamp",
+              "required": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "long"
+            }
+          },
+          "description": "Requests a new release"
+        },
+        {
+          "method": "POST",
+          "path": "/:serviceName/drop",
+          "parameters": [
+            {
+              "name": "version",
+              "type": "string",
+              "description": "Version of service to remove"
+            },
+            {
+              "name": "config",
+              "type": "date-time-iso8601",
+              "description": "Configuration timestamp",
+              "required": false
+            },
+            {
+              "name": "force",
+              "type": "boolean",
+              "default": "false",
+              "description": "Remove version even if it is taking live traffic"
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "long"
+            }
+          },
+          "description": "Drops a release"
+        }
+      ]
+    }
+  },
+  "models": {
+    "service": {
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "state",
+          "type": "service_state"
+        }
+      ]
+    },
+    "service_config": {
+       "description": "Configuration used by a service",
+       "fields": [
+         {
+           "name": "url",
+           "type": "string",
+           "description": "URL of endpoint pointing at service"
+         },
+         {
+           "name": "hosted_zone_id",
+           "type": "string",
+           "description": "Hosted Zone ID for DNS entry"
+         },
+         {
+           "name": "aws_account_id",
+           "type": "string",
+           "description": "ID of AWS account where this service is deployed"
+         },
+         {
+           "name": "external_elb",
+           "type": "elb_settings",
+           "description": "Details for external ELB",
+           "required": false
+         },
+         {
+           "name": "service_role",
+           "type": "string",
+           "description": "Role used to run this service; specifies policy for accessing S3, RDS, DynamoDb etc."
+         },
+         {
+           "name": "image",
+           "type": "string",
+           "description": "Docker image details used in deployments"
+         },
+         {
+           "name": "port_mappings",
+           "type": "[port_mapping]",
+           "description": "List of port mappings configured for use by Docker image"
+         },
+         {
+           "name": "volume_mappings",
+           "type": "[volume_mapping]",
+           "description": "List of volume mappings configured for use by Docker image",
+           "required": false
+         },
+         {
+           "name": "run_args",
+           "type": "[string]",
+           "description": "Arguments passed to running Docker image"
+         },
+         {
+           "name": "eb",
+           "type": "eb_config",
+           "description": "Elastic Beanstalk configuration including deployment bucket, stack name and option settings like env variables, vpc, security groups etc."
+         },
+         {
+           "name": "remove_unused_after_minutes",
+           "type": "long",
+           "description": "When an environment becomes unused, remove it after the specified number of minutes",
+           "required": false
+         },
+         {
+           "name": "timestamp",
+           "type": "date-time-iso8601",
+           "description": "When this configuration has been created",
+           "required": false
+         }
+       ]
+    },
+    "service_state": {
+      "description": "State of service environments",
+      "fields": [
+        {
+          "name": "current",
+          "type": "service_current_state",
+          "description": "List of environments and their current status"
+        },
+        {
+          "name": "desired",
+          "type": "service_desired_state",
+          "required": false,
+          "description": "List of environments and their desired status"
+        }
+      ]
+    },
+    "service_current_state": {
+      "description": "Current state of service environments",
+      "fields": [
+        {
+          "name": "environments",
+          "type": "[environment]",
+          "description": "List of environments and their current status"
+        }
+      ]
+    },
+    "service_desired_state": {
+      "description": "Desired future state of service",
+      "fields": [
+        {
+          "name": "current",
+          "type": "release",
+          "description": "Current release of software",
+          "required": false
+        },
+        {
+          "name": "next",
+          "type": "release",
+          "description": "Next release of software",
+          "required": false
+        },
+        {
+          "name": "future",
+          "type": "release",
+          "description": "Future release of software",
+          "required": false
+        }
+      ]
+    },
+    "environment": {
+      "description": "Elastic Beanstalk Environment running in AWS",
+      "fields": [
+        {
+          "name": "release",
+          "type": "release",
+          "description": "Details of the release present in the environment"
+        },
+        {
+          "name": "health",
+          "type": "string",
+          "description": "Health of environment"
+        }
+      ]
+    },
+    "port_mapping": {
+      "description": "Mapping from port in Docker container to external host port",
+      "fields": [
+        {
+          "name": "internal",
+          "type": "integer",
+          "description": "Port to be forwarded from Docker container"
+        },
+        {
+          "name": "external",
+          "type": "integer",
+          "description": "Port to be mapped to on external hosts"
+        }
+      ]
+    },
+    "volume_mapping": {
+      "description": "Mapping from path inside Docker container to external volume",
+      "fields": [
+        {
+          "name": "internal",
+          "type": "string",
+          "description": "Location on image's filesystem that Docker volume is mapped to"
+        },
+        {
+          "name": "external",
+          "type": "string",
+          "description": "Identifier or path for location to be mapped into Docker environment"
+        }
+      ]
+    },
+    "release": {
+      "description": "A release of a particular tag of a Docker image",
+      "fields": [
+        {
+          "name": "image",
+          "type": "string",
+          "description": "The Docker repository and name of images to be released"
+        },
+        {
+          "name": "tag",
+          "type": "string",
+          "description": "The tag for the image to be released"
+        },
+        {
+          "name": "config",
+          "type": "date-time-iso8601",
+          "description": "Configuration timestamp"
+        },
+        {
+          "name": "rollout_status",
+          "type": "rollout_status",
+          "description": "Current rollout status",
+          "required": false
+        }
+      ]
+    },
+    "elb_settings": {
+      "description": "Settings for external ELB",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Name of ELB"
+        },
+        {
+          "name": "security_group",
+          "type": "string",
+          "description": "Security group for ELB instances"
+        },
+        {
+          "name": "rollout_delay_minutes",
+          "type": "integer",
+          "description": "Delay in minutes between rollout increments"
+        }
+      ]
+    },
+    "rollout_status": {
+      "description": "Current rollout status for release",
+      "fields": [
+        {
+          "name": "num_instances",
+          "type": "integer",
+          "description": "Number of instances in external load balancer",
+          "required": false
+        },
+        {
+          "name": "completed_at",
+          "type": "date-time-iso8601",
+          "description": "Time at which latest increment completed",
+          "required": false
+        }
+      ]
+    },
+    "eb_config": {
+      "description": "Elastic Beanstalk configuration including deployment bucket, stack name and option settings",
+      "fields": [
+        {
+          "name": "deployment_bucket",
+          "type": "string",
+          "description": "Deployment bucket used to deploy Elastic Beanstalk applications"
+        },
+        {
+          "name": "stack",
+          "type": "string",
+          "description": "Solution stack name (i.e. 64bit Amazon Linux 2014.09 v1.0.10 running Docker 1.3.2)",
+          "required": false
+        },
+        {
+          "name": "settings",
+          "type": "[option_setting]",
+          "description": "Elastic Beanstalk configuration option settings, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html"
+        },
+        {
+          "name": "resources",
+          "type": "object",
+          "description": "Elastic Beanstalk environment resources, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-resources.html",
+          "required": false
+        },
+        {
+          "name": "packages",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        },
+        {
+          "name": "sources",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        },
+        {
+          "name": "files",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        },
+        {
+          "name": "users",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        },
+        {
+          "name": "groups",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        },
+        {
+          "name": "commands",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        },
+        {
+          "name": "container_commands",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        },
+        {
+          "name": "services",
+          "type": "object",
+          "description": "Elastic Beanstalk container customization, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html",
+          "required": false
+        }
+      ]
+    },
+    "option_setting": {
+      "description": "Elastic Beanstalk configuration option setting",
+      "fields": [
+        {
+          "name": "Namespace",
+          "type": "string"
+        },
+        {
+          "name": "OptionName",
+          "type": "string"
+        },
+        {
+          "name": "Value",
+          "type": "string"
+        }
+      ]
+    }
+  }
+}

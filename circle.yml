@@ -1,0 +1,26 @@
+machine:
+  java:
+    version: oraclejdk8
+  environment:
+    DOCKERFILE_PATH: www/target/docker/stage
+  services:
+    - docker
+
+dependencies:
+  override: 
+   - sbt -Dsbt.log.noformat=true update
+
+test:
+  override:
+   - sbt -Dsbt.log.noformat=true clean coverage test
+  post:
+    - sbt -Dsbt.log.noformat=true www/docker:stage
+    - bash -x test_docker_image.sh $DOCKERFILE_PATH $CIRCLE_PROJECT_REPONAME:$CIRCLE_BUILD_NUM:
+        timeout: 3600
+
+general:
+  build_dir: .
+  artifacts:
+    - "backend/target/scala-2.11/scoverage-report"
+    - "cmd/target/scala-2.11/scoverage-report"
+    - "www/target/scala-2.11/scoverage-report"

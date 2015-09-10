@@ -1,0 +1,74 @@
+@(service: String, config: Option[ionroller.TimelineConfiguration], desired: Option[ionroller.DesiredTimelineState], configs: Seq[ionroller.TimelineConfiguration])
+@main {
+<h3>@service</h3>
+@for(conf <- config) {
+<table class="table">
+    <table class="table">
+        <tr>
+            <td>URL</td>
+            <td>@conf.url</td>
+        </tr>
+        <tr>
+            <td>Docker Image</td>
+            <td>@conf.dockerImage</td>
+        </tr>
+        <tr>
+            <td>Configuration</td>
+            <td><a href="/services/@service/configs/@conf.timestamp">@conf.timestamp</a></td>
+        </tr>
+    </table>
+    }
+
+    <h3>Current Version</h3>
+    @for(des <- desired.flatMap(_.curEnvironment)) {
+    <table class="table">
+        <tr>
+            <td>Docker Image</td>
+            <td>@des.dockerImage</td>
+        </tr>
+        <tr>
+            <td>Configuration:</td>
+            <td><a href="/services/@service/configs/@des.config.timestamp">@des.config.timestamp</a></td>
+        </tr>
+    </table>
+
+    }
+
+    @for(des <- desired.flatMap(_.nextEnvironment)) {
+    <h3>Next Version</h3>
+
+    <table class="table">
+        <tr>
+            <td>Docker Image</td>
+            <td>@des.dockerImage</td>
+        </tr>
+        <tr>
+            <td>Configuration:</td>
+            <td><a href="/services/@service/configs/@des.config.timestamp">@des.config.timestamp</a></td>
+        </tr>
+    </table>
+    }
+
+    @for(des <- desired.flatMap(_.futureEnvironment)) {
+    <h3>Future Version</h3>
+    <table class="table">
+        <tr>
+            <td>Configuration:</td>
+            <td><a href="/services/@service/configs/@des.config.timestamp">@des.config.timestamp</a></td>
+        </tr>
+        <tr>
+            <td>Docker Image</td>
+            <td>@des.dockerImage</td>
+        </tr>
+    </table>
+    }
+
+    <hr>
+
+    <h3>Configuration history</h3>
+    <ul>
+        @for(config <- configs) {
+        <li><a href="/services/@service/configs/@config.timestamp">@config.timestamp</a></li>
+        }
+    </ul>
+    }

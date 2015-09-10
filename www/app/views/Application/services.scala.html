@@ -1,0 +1,10 @@
+@(services: Seq[ionroller.TimelineName])
+@main {
+<ol>
+    @for(service <- services.map(_.name).toList.sorted) {
+    <li><a href="/ui/services/@service">@service</a></li>
+    }
+</ol>
+}
+
+

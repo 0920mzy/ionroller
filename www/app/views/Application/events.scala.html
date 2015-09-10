@@ -1,0 +1,29 @@
+@main {
+<header>
+    <div class="input-group">
+        <span class="input-group-addon" id="service_label">service</span>
+        <input name="service" id="service" class="form-control" type="text">
+        <span class="input-group-addon" id="version_label">version</span>
+        <input id="version" name="version" class="form-control" type="text">
+        <span class="input-group-addon" id="from">from</span>
+        <input id="date_timepicker_start" class="form-control" type="text">
+        <span class="input-group-addon" id="to">to</span>
+        <input id="date_timepicker_end" class="form-control" type="text">
+        <span class="input-group-btn">
+            <button id="search" class="btn btn-default" type="button">Search</button>
+        </span>
+    </div>
+</header>
+<div id="wrapper">
+    <i id="spinner" class="fa fa-cog fa-spin fa-5x"></i>
+    <div id="events_content">
+        <table id="events" class="contentTable"></table>
+    </div>
+</div>
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/events.css")">
+<link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/jquery.datetimepicker.css")"/ >
+<script src="@routes.Assets.at("javascripts/jquery-dateFormat.min.js")"></script>
+<script src="@routes.Assets.at("javascripts/prettyPrintJson.js")"></script>
+<script src="@routes.Assets.at("javascripts/events.js")"></script>
+<script src="@routes.Assets.at("javascripts/jquery.datetimepicker.js")"></script>
+}

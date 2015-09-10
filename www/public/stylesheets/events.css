@@ -1,0 +1,122 @@
+* {
+    margin: 0; padding: 0;
+}
+html, body {
+    height: 100%;
+    background-color:#efefef;
+}
+
+#wrapper {
+  top: 120px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+  margin: 6px;
+  text-align: center;
+}
+
+#wrapper div {
+ 	min-height: 100%;
+  	margin: 0 auto;
+}
+
+header {
+	min-height:50px;
+	padding: 6px;
+	margin: 18px;
+	padding-top:20px;
+	text-align: center;
+	vertical-align: middle;
+	display:block;
+}
+
+h2 {
+	cursor: pointer;
+	padding-top:20px;
+	padding-bottom:20px;
+	margin: 0 auto;
+}
+
+div#error {
+	color: red;
+	font-size: 12px;
+	padding: 2px;
+}
+
+.contentTable {
+	width: 100%;
+	font-size:12px;
+	overflow: auto;
+    margin: 0 auto;
+    word-break: break-all;
+    white-space: normal;
+    border-spacing: 2px;
+    border-collapse: separate;
+}
+
+.contentTable tr td {
+	padding:18px;
+	text-align: left;
+	background: rgba(255, 255, 255, 0.85);
+}
+
+.contentTable tr:hover td{
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.contentTable tr td.service{
+	min-width:150px;
+	cursor: pointer;
+	word-break: keep-all;
+}
+.contentTable tr td.version{
+	text-align: center;
+	min-width:50px;
+	cursor: pointer;
+	word-break: keep-all;
+}
+.contentTable tr td.type{
+	word-break: keep-all;
+	width:200px;
+}
+.contentTable tr td.user{
+	min-width:100px;
+	word-break: keep-all;
+}
+.contentTable tr td.timestamp{
+	text-align: center;
+	min-width:110px;
+	word-break: keep-all;
+}
+.contentTable tr td.details{
+	width:500px;
+	cursor: pointer;
+}
+
+.contentTable tr td.msg{
+    word-break: break-all;
+    white-space: normal;
+}
+
+.json-key {
+   color: brown;
+   font-size:12px;
+}
+
+.json-value {
+   color: navy;
+   font-size:12px;
+}
+
+.json-string {
+   color: olive;
+   word-break: break-all;
+   white-space: normal;
+   font-size:12px;
+}
+
+.nodata {
+	font-size: large;
+	background: rgba(0, 0, 0, 0);
+}

@@ -1,0 +1,110 @@
+#!/bin/sh
+#
+#                                  ___    ___
+#  __                             /\_ \  /\_ \
+# /\_\    ___     ___   _ __   ___\//\ \ \//\ \      __   _ __
+# \/\ \  / __`\ /' _ `\/\`'__\/ __`\\ \ \  \ \ \   /'__`\/\`'__\
+#  \ \ \/\ \L\ \/\ \/\ \ \ \//\ \L\ \\_\ \_ \_\ \_/\  __/\ \ \/
+#   \ \_\ \____/\ \_\ \_\ \_\\ \____//\____\/\____\ \____\\ \_\
+#    \/_/\/___/  \/_/\/_/\/_/ \/___/ \/____/\/____/\/____/ \/_/
+#
+#    roll them there ions
+#    Brought to you by the fine folks at Gilt (http://github.com/gilt)
+
+# colors!
+blue=$(tput setaf 4)
+cyan=$(tput setaf 6)
+gray=$(tput setaf 8)
+green=$(tput setaf 2)
+red=$(tput setaf 1)
+reset=$(tput sgr0)
+white=$(tput setaf 7)
+yellow=$(tput setaf 3)
+
+# styles!
+bold=$(tput bold)
+
+echo "\n  ${cyan}${bold}ION-Roller Installation!${reset}\n\n    ${blue}Looking for $HOME/bin...${reset}"
+
+if [ ! -d "$HOME/bin" ]; then
+  echo "    ${yellow}$HOME/bin wasn't found!${reset}\n    This is where ION-Roller will live, so we'll create the directory for you..."
+  mkdir -p "$HOME/bin"
+
+  echo "\n    ${blue}Updating PATH envar${reset}"
+  echo "\nexport PATH=\"$PATH:$HOME/bin\"" >> ~/.bash_profile
+  export PATH="$PATH:$HOME/bin"
+
+  echo "    Setup complete. Onto the good stuff...\n"
+fi
+
+echo "    ${blue}Checking your identity setting... ${reset}"
+USERNAME=$(git config user.email 2> /dev/null)
+if [ -z "$USERNAME" ] ; then
+   echo "    ${yellow}git config user.email isn't set!${reset}\n    Please set user.email in your git config."
+else
+  echo "    Hello $USERNAME!"
+fi
+
+echo "    ${blue}Checking your Java version... ${reset}"
+JAVA_VER=$(java -version 2>&1| awk -F '"' '/version/ {print $2}')
+JAVA_VER_NUM=$(echo $JAVA_VER | sed 's/\(.*\)\.\(.*\)\..*/\1\2/; 1q')
+if [ "$JAVA_VER_NUM" -lt 18 ]; then
+   echo "    ${red}Java 8 is required! Your current version is $JAVA_VER${reset}"
+   echo "       For MacOS users:"
+   echo "       ${yellow} * Install Java 8 from: ${reset}"
+   echo "           http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html"
+   echo "       ${yellow} * Check which java versions are available on your OS:${reset}"
+   echo "           /usr/libexec/java_home -V"
+   echo "       ${yellow} * Switch to Java 8:${reset}"
+   echo '           export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"'
+   exit 1
+fi
+
+
+VERSION=<VERSION>
+CURR_VERSION=$(ionroller version 2> /dev/null)
+PREV_INSTALLED=false
+PACKAGE_URL="https://s3.amazonaws.com/ionroller-cli/ionroller_cli-$VERSION.zip"
+
+if [[ ! "$VERSION" == "$CURR_VERSION" ]]; then
+  if [ ! -e "`which ionroller`" ] ; then
+    echo "  ${cyan}Installing ION-Roller $VERSION...${reset}"
+  else
+    PREV_INSTALLED=true
+    echo "  ${cyan}Updating ION-Roller to version $VERSION...${reset}"
+  fi
+
+  mkdir -p ~/share/ionroller-cli
+
+  if [ ! -d ~/share/ionroller-cli/ionroller_cli-$VERSION ] ; then
+    echo "\n  ${cyan}Downloading $PACKAGE_URL...${reset}\n"
+    curl "$PACKAGE_URL" -o ~/share/ionroller-cli/ionroller_cli-$VERSION.zip
+    unzip -o ~/share/ionroller-cli/ionroller_cli-$VERSION.zip -d ~/share/ionroller-cli
+    rm ~/share/ionroller-cli/ionroller_cli-$VERSION.zip
+  fi
+
+  echo "\n  ${cyan}Setting up ION-Roller...\n${reset}"
+
+  ln -sf ~/share/ionroller-cli/ionroller_cli-$VERSION/bin/ionroller_cli ~/bin/ionroller
+  chmod +x ~/bin/ionroller
+
+  # warn the user that they can't use the command globally,
+  # but that doesn't mean that the install wasn't successful.
+  if [ ! -e "`which ionroller`" ]; then
+    echo "  ${yellow}It doesn't look like ~/bin is in your PATH variable.${reset}\n  Please add that directory for the best ionroller experience.\n"
+  fi
+
+  if [ "$PREV_INSTALLED" = false ] ; then
+    echo "  ${green}ION-Roller was installed successfully.${reset}\n\n  Please review ION-Roller's options:\n"
+
+    # dont rely on the PATH being updated, since we're already warning about it.
+    # only show new users/installs the command output
+    ~/bin/ionroller || true
+  else
+    echo "  ${green}ION-Roller was updated successfully.${reset}"
+  fi
+
+else
+  echo "  ${green}The latest version of ION-Roller ($VERSION) is already installed!${reset}"
+fi
+
