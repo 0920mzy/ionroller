@@ -15,7 +15,7 @@ test:
    - sbt -Dsbt.log.noformat=true clean coverage test
   post:
     - sbt -Dsbt.log.noformat=true www/docker:stage
-    - bash -x test_docker_image.sh $DOCKERFILE_PATH $CIRCLE_PROJECT_REPONAME:$CIRCLE_BUILD_NUM:
+    - bash test_docker_image.sh $DOCKERFILE_PATH $CIRCLE_PROJECT_REPONAME:$CIRCLE_BUILD_NUM:
         timeout: 3600
 
 general:
