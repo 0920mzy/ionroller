@@ -35,7 +35,7 @@ object Route53 {
     Kleisli { client =>
       val aliasTarget: AliasTarget = new AliasTarget().withDNSName(targetName).withEvaluateTargetHealth(true).withHostedZoneId(targetZoneId)
       val rrSetWithoutWeight = new ResourceRecordSet().withName(name).withAliasTarget(aliasTarget).withType(RRType.A)
-      val rrSetWithWeight = new ResourceRecordSet().withName(name).withAliasTarget(aliasTarget).withType(RRType.A).withSetIdentifier("ionroller").withWeight(100L)
+      val rrSetWithWeight = new ResourceRecordSet().withName(name).withAliasTarget(aliasTarget).withType(RRType.A).withSetIdentifier("ionroller").withWeight(0L)
 
       Task {
         client.route53.changeResourceRecordSets(getChangeReq(rrSetWithWeight, hostedZoneId))
@@ -52,7 +52,7 @@ object Route53 {
     Kleisli { client =>
       val rr = new ResourceRecord().withValue(targetIP)
       val rrSetWithoutWeight = new ResourceRecordSet().withName(name).withResourceRecords(rr).withTTL(60L).withType(RRType.A)
-      val rrSetWithWeight = new ResourceRecordSet().withName(name).withResourceRecords(rr).withTTL(60L).withType(RRType.A).withSetIdentifier("ionroller").withWeight(100L)
+      val rrSetWithWeight = new ResourceRecordSet().withName(name).withResourceRecords(rr).withTTL(60L).withType(RRType.A).withSetIdentifier("ionroller").withWeight(0L)
 
       Task {
         client.route53.changeResourceRecordSets(getChangeReq(rrSetWithWeight, hostedZoneId))
