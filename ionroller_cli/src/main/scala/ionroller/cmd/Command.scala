@@ -24,7 +24,7 @@ case object CmdVersion extends Command
 
 case object CmdUpdate extends Command
 
-case object CmdSetup extends Command
+final case class CmdSetup(file: String) extends Command
 
 final case class CmdSetBaseUrl(baseUrl: String) extends Command
 

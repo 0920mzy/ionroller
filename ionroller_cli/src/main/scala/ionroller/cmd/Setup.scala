@@ -5,7 +5,11 @@ import com.amazonaws.auth.policy.actions.{SecurityTokenServiceActions, DynamoDBv
 import com.amazonaws.services.dynamodbv2.document.Table
 import com.amazonaws.services.identitymanagement.{AmazonIdentityManagementClient, AmazonIdentityManagement}
 import com.amazonaws.services.identitymanagement.model._
+import com.gilt.ionroller.api.v0.models.ServiceConfig
+import ionroller.{ApidocImplicits, TimelineConfiguration}
 import ionroller.aws.Dynamo
+import scala.collection.JavaConverters._
+import org.joda.time.DateTime
 
 import scalaz.Kleisli
 import scalaz.concurrent.Task
@@ -51,15 +55,29 @@ object Setup {
     }
   }
 
-  def createExtraPolicyForService(accountId: Long, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
+  def getExtraPolicyForService(policyName: String): Kleisli[Task, AmazonIdentityManagement, Option[com.amazonaws.services.identitymanagement.model.Policy]] = {
     Kleisli { client =>
+      val req = new ListPoliciesRequest()
+      Task.delay(client.listPolicies(req).getPolicies.asScala.find(_.getPolicyName == policyName))
+    }
+  }
+
+  def createExtraPolicyForService(policyName: String, accountId: Long, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
+    Kleisli { client: AmazonIdentityManagement =>
       val dynamoResources = tables.map(t => new com.amazonaws.auth.policy.Resource(s"arn:aws:dynamodb:us-east-1:$accountId:table/$t"))
       val dynamoStatement = new Statement(Statement.Effect.Allow).withActions(DynamoDBv2Actions.AllDynamoDBv2Actions).withResources(dynamoResources: _*)
 
       val policy = new Policy().withStatements(dynamoStatement)
-      val req = new CreatePolicyRequest().withPolicyName("IONRollerExtraPolicy").withPolicyDocument(policy.toJson)
+      val req = new CreatePolicyRequest().withPolicyName(policyName).withPolicyDocument(policy.toJson)
 
       Task.delay(client.createPolicy(req).getPolicy)
+    }
+  }
+
+  def getOrCreateExtraPolicyForService(policyName: String, accountId: Long, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
+    getExtraPolicyForService(policyName) flatMap {
+      case None => createExtraPolicyForService(policyName, accountId, tables)
+      case Some(policy) => Kleisli { _ => Task.now(policy) }
     }
   }
 
@@ -155,7 +173,22 @@ object Setup {
     }
   }
 
-  val setup = for {
+  def serviceConfigToTimelineConfig(serviceConfig: ServiceConfig): Task[TimelineConfiguration] = {
+    import ApidocImplicits._
+
+    Task.delay(serviceConfig.fromApidoc)
+  }
+
+  def addConfigToDynamoDB(config: ServiceConfig) = {
+    for {
+      table <- Dynamo.configTable(None)
+      timelineConfig <- serviceConfigToTimelineConfig(config)
+      _ = { println("Saving config in table: " + timelineConfig) }
+      save <- Dynamo.saveConfig(table, "ionroller", timelineConfig)
+    } yield save
+  }
+
+  def setup(config: ServiceConfig) = for {
     tables <- Dynamo.listTables
     configTable <- setupOrGetConfigTable(tables)
     eventTable <- setupEventTable(tables)
@@ -164,10 +197,11 @@ object Setup {
     userArn <- getUserArn(identityClient)
     accountId <- Task.delay(userArn.split(":")(4).toLong)
     role <- getOrCreateIonrollerRole("ionroller", userArn).run(identityClient)
-    extraPolicy <- createExtraPolicyForService(accountId, List(Dynamo.defaultConfigTable, Dynamo.defaultEventTable, Dynamo.defaultStateTable))(identityClient)
+    extraPolicy <- getOrCreateExtraPolicyForService("IONRollerExtraPolicy", accountId, List(Dynamo.defaultConfigTable, Dynamo.defaultEventTable, Dynamo.defaultStateTable))(identityClient)
     _ <- addPermissionsToRole("ionroller", extraPolicy.getArn)(identityClient)
     instanceProfile <- getOrCreateInstanceProfile("ionroller")(identityClient)
     _ <- maybeAddRoleToInstanceProfile(instanceProfile, role)(identityClient)
+    _ <- addConfigToDynamoDB(config)
   } yield ()
 
 }

@@ -62,6 +62,9 @@ object IonrollerParser {
   val currentOpts: Parser[Command] =
     strArgument(metavar("SERVICE"), help("Name of service")).map(CmdCurrent.apply)
 
+  val setupOpts: Parser[Command] =
+    strArgument(metavar("FILE"), help("Path to file with JSON config")).map(CmdSetup.apply)
+
   val setBaseUrlOpts: Parser[Command] =
     strArgument(metavar("BASE_URL"), help("ION-Roller service base URL")).map(CmdSetBaseUrl.apply)
 
@@ -136,8 +139,8 @@ object IonrollerParser {
       command(
         "setup",
         info(
-          Parser.pure(CmdSetup),
-          progDesc("Setup ionroller service")
+          setupOpts,
+          progDesc("Setup ionroller service: ionroller setup [FILE]")
         )
       ),
       command(

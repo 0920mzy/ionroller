@@ -16,6 +16,8 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import play.api.libs.json.{JsValue, Json}
 
+import com.gilt.ionroller.api.v0.models.json.{jsonReadsIonrollerAPIServiceConfig => serviceConfigReads}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.io.StdIn
@@ -113,10 +115,9 @@ object Main extends TaskApp with StrictLogging {
   }
 
   def setConfig(client: Client, service: String, file: Option[String]): Task[String] = {
-    val serviceConfigReads = com.gilt.ionroller.api.v0.models.json.jsonReadsIonrollerAPIServiceConfig
     (for {
       json <- readStringFromFileOrStdin(file)
-      serviceConfig <- Task(Json.parse(json).as[ServiceConfig](serviceConfigReads))
+      serviceConfig <- Task.delay(Json.parse(json).as[ServiceConfig](serviceConfigReads))
       putResult <- client.Services.putConfigByServiceName(service, serviceConfig).map(_ => "Configuration updated.")
     } yield putResult).handleWith({
       case fr @ FailedRequest(404, message, _) => Task(s"$message ${fr.message}")
@@ -334,13 +335,17 @@ object Main extends TaskApp with StrictLogging {
         _ <- update(asyncClient, cliUpdateUrl)
       } yield Task(())
 
-    case CmdSetup =>
+    case CmdSetup(file) =>
       println("Setting up ION-Roller...")
 
-      Setup.setup.onFinish {
+      (for {
+        json <- readStringFromFile(file)
+        serviceConfig <- Task.delay(Json.parse(json).as[ServiceConfig](serviceConfigReads))
+        _ <- Setup.setup(serviceConfig)
+      } yield ()).onFinish {
         // TODO: Issues quitting client here, nuking from orbit
         case _ => Task.delay {
-          Thread.sleep(1000); sys.exit(0)
+          //Thread.sleep(1000); sys.exit(0)
         }
       }
 
