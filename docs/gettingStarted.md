@@ -31,5 +31,6 @@ It's recommended to wrap your head around:
 
  - [Identity and Access Management (or IAM)](http://aws.amazon.com/iam/) roles, [giving permissions to applications] (http://docs.aws.amazon.com/IAM/latest/UserGuide/roles-usingrole-ec2instance.html), policies, and [Instance Profiles](http://docs.aws.amazon.com/IAM/latest/UserGuide/roles-usingrole-instanceprofile.html)
  - [Amazon Virtual Private Cloud (Amazon VPC) and Subnets] (http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html) - especially for *production* deployments
+ - [VPC details specific to Elastic Beanstalk](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo-vpc.html)
  - [Amazon EC2 Security Groups](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)
  
