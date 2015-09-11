@@ -186,7 +186,7 @@ Configuration template:
 <br/><br/>
 <b>volume_mappings</b>: optional 
 <br/><br/>
-<b>run_args</b>: run arguments for service. <code>pidfile.path=/dev/null</code> is required for restarting Play apps withing Docker container.
+<b>run_args</b>: run arguments for service.<br/><code>pidfile.path=/dev/null</code><br/>is required for restarting Play apps withing Docker container.
 <br/><br/>
 <b>stack</b>: optional; default is latest Docker stack
 <br/><br/>
