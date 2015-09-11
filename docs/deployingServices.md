@@ -199,7 +199,7 @@ Configuration template:
 <br/><br/>
 <b>resources</b>: optional; <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">overrides or extra resources in the CloudFormation template</a>.
 <br/><br/>
-<b>files</b>: optional <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html#customize-containers-format-files">custom Elastic Beanstalk environment Packages, Sources, Files, Users, Groups, Commands, Container_commands, Services</a>
+<b>files</b>: optional <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html#customize-containers-format-files">custom Elastic Beanstalk environment settings: Packages, Sources, Files, Users, Groups, Commands, Container_commands, Services</a>
         </td>
     </tr>
 </table>
