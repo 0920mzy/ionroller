@@ -143,7 +143,7 @@ class LiveStateCollector(cache: Kleisli[Task, String, AWSClientCache]) extends S
     val map = for {
       (k, v) <- env
       instanceStates = elb.get(k).sequence
-      dnsDest <- dns.get(k)
+      dnsDest = dns.get(k).getOrElse(Seq.empty.right)
       timelineState = {
         Apply[Result]
           .apply3(v, instanceStates, dnsDest)(LiveTimelineState(now, _, _, _))
@@ -152,7 +152,7 @@ class LiveStateCollector(cache: Kleisli[Task, String, AWSClientCache]) extends S
       }
     } yield k -> timelineState
 
-    LiveSystemState(map)
+    LiveSystemState(map.toMap)
   }
 
   /**
