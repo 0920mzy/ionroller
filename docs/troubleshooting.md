@@ -66,10 +66,8 @@ Find java process PID
 ps auxwww | grep java
 ```
 Example:
-<pre><code>
-[ec2-user@ip-172-16-16-75 schema]$ ps auxwww | grep java
-bin      26388 0.1 13.0 2085572 267704 ?      Ssl  12:53   0:07 /usr/lib/jvm/java-7-openjdk-amd64/bin/java -Xms1024m -Xmx1024m -XX:MaxPermSize=256m -XX:ReservedCodeCacheSize=128m -Duser.dir=/opt/docker -javaagent:/opt/docker/bin/../newrelic/newrelic.jar -cp /opt/docker/lib/myservice ...
-</code></pre>
+<pre><code>[ec2-user@ip-172-16-16-75 schema]$ ps auxwww | grep java
+bin      26388 0.1 13.0 2085572 267704 ?      Ssl  12:53   0:07 /usr/lib/jvm/java-7-openjdk-amd64/bin/java -Xms1024m -Xmx1024m -XX:MaxPermSize=256m -XX:ReservedCodeCacheSize=128m -Duser.dir=/opt/docker -javaagent:/opt/docker/bin/../newrelic/newrelic.jar -cp /opt/docker/lib/myservice ...</code></pre>
 Use nsenter to connect to Docker image
 ```bash
 sudo nsenter --target 26388 --mount --uts --ipc --net --pid
