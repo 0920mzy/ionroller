@@ -50,3 +50,5 @@ ionroller release hello-world 1.0.0
 ## Enjoy!
 
 Your service should be available at <a href ="deployingServices.md#decide-on-the-domain-for-your-service">"&lt;URL&gt;"</a>
+
+<img src="images/ui-hello.png"/>
