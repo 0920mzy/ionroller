@@ -91,22 +91,26 @@ object Main extends TaskApp with StrictLogging {
     client.Services.getConfigsByServiceName(service, from, to).map({ sc => sc.map(_.timestamp) })
   }
 
+  def readStringFromFileOrStdin(file: Option[String]): Task[String] = {
+    Task.delay {
+      file match {
+        case Some(f) =>
+          val fileSource = scala.io.Source.fromFile(f)
+          val str = fileSource.mkString
+          fileSource.close()
+          str
+        case None =>
+          val inBuffer = new StringBuilder
+          Iterator.continually(Option(scala.io.StdIn.readLine())).takeWhile(in => in.isDefined).foreach(in => inBuffer.append(in.get))
+          inBuffer.mkString
+      }
+    }
+  }
+
   def setConfig(client: Client, service: String, file: Option[String]): Task[String] = {
     val serviceConfigReads = com.gilt.ionroller.api.v0.models.json.jsonReadsIonrollerAPIServiceConfig
     (for {
-      json <- Task {
-        file match {
-          case Some(f) =>
-            val fileSource = scala.io.Source.fromFile(f)
-            val str = fileSource.mkString
-            fileSource.close()
-            str
-          case None =>
-            val inBuffer = new StringBuilder
-            Iterator.continually(Option(scala.io.StdIn.readLine())).takeWhile(in => in.isDefined).foreach(in => inBuffer.append(in.get))
-            inBuffer.mkString
-        }
-      }
+      json <- readStringFromFileOrStdin(file)
       serviceConfig <- Task(Json.parse(json).as[ServiceConfig](serviceConfigReads))
       putResult <- client.Services.putConfigByServiceName(service, serviceConfig).map(_ => "Configuration updated.")
     } yield putResult).handleWith({
