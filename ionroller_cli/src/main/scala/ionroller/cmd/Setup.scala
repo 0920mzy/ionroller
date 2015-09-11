@@ -66,8 +66,9 @@ object Setup {
     Kleisli { client: AmazonIdentityManagement =>
       val dynamoResources = tables.map(t => new com.amazonaws.auth.policy.Resource(s"arn:aws:dynamodb:us-east-1:$accountId:table/$t"))
       val dynamoStatement = new Statement(Statement.Effect.Allow).withActions(DynamoDBv2Actions.AllDynamoDBv2Actions).withResources(dynamoResources: _*)
+      val stsStatement = new Statement(Statement.Effect.Allow).withActions(SecurityTokenServiceActions.AssumeRole).withResources(new com.amazonaws.auth.policy.Resource("*"))
 
-      val policy = new Policy().withStatements(dynamoStatement)
+      val policy = new Policy().withStatements(dynamoStatement, stsStatement)
       val req = new CreatePolicyRequest().withPolicyName(policyName).withPolicyDocument(policy.toJson)
 
       Task.delay(client.createPolicy(req).getPolicy)
