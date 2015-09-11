@@ -62,6 +62,10 @@ You will also want to consider the "Connection Draining" setting for the load ba
 
 <img src="images/ec2-lb-2.png" width="400px" />
 
+## Deploy 'hello-world' service 
+
+As a warmup follow [steps to deploy an example 'hello-world' service](deployHelloService.md).
+
 ## Let's (ION-)roll! On to the actual deployment
 
 ###  Add your service configuration to ION-Roller
@@ -185,7 +189,7 @@ Configuration template:
 <br/><br/>
 <b>subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
 <br/><br/>
-<b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world
+<b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world. Default: internal
 <br/><br/>
 <b>CrossZone</b>: Allow ELBs to send traffic to other availability zones
 <br/><br/>
@@ -200,6 +204,8 @@ Configuration template:
 <b>resources</b>: optional; <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">overrides or extra resources in the CloudFormation template</a>.
 <br/><br/>
 <b>files</b>: optional <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html#customize-containers-format-files">custom Elastic Beanstalk environment settings: Packages, Sources, Files, Users, Groups, Commands, Container_commands, Services</a>
+<br/><br/>
+<b>remove_unused_after_minutes</b>: optional; default 60min       
         </td>
     </tr>
 </table>
