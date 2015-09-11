@@ -11,6 +11,22 @@ e.g. service configuration:
 sbt < 0.13.6
 <pre><code>"run_args":["-mem", "200"]</code></pre>
 
+## Fix "too many open files" 
+Set set `ulimit` to unlimited in your service configuration:
+
+<pre><code>
+{
+   "files":{
+      "/etc/security/limits.conf":{
+         "owner":"root",
+         "mode":"000755",
+         "content":"* hard nofile -1\r\n* soft nofile -1",
+         "group":"root"
+      }
+   }
+}
+</code></pre>
+
 ## Remove unhealthy (red) instances
 ```bash
 ionroller drop <SERVICE_NAME> <VERSION> --force
