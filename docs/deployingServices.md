@@ -152,11 +152,11 @@ Configuration template:
           }
       ],
       <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-resources.html">"resources"</a>: {
-            "<RESOURCE_ID>":{
-              "Type":"<CLOUDFORMATION_TYPE>",
+            "&lt;RESOURCE_ID&gt;":{
+              "Type":"&lt;CLOUDFORMATION_TYPE&gt;",
               "Properties":{
-                "<PROPERTY_NAME1>":"<PROPERTY_VALUE1>",
-                "<PROPERTY_NAME2>":"<PROPERTY_VALUE2>"
+                "&lt;PROPERTY_NAME1&gt;":"&lt;PROPERTY_VALUE1&gt;",
+                "&lt;PROPERTY_NAME2&gt;":"&lt;PROPERTY_VALUE2&gt;"
               },
             },     
           },
