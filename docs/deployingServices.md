@@ -74,8 +74,10 @@ ionroller config my-service > my-service-config.json
 ```
 
 Configuration template:
-
-<pre><code>{
+<table cellpadding="10">
+    <tr>
+        <td>
+       <pre><code>{
    "url":<a href ="#decide-on-the-domain-for-your-service">"&lt;URL&gt;"</a>, 
    "hosted_zone_id":<a href ="#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
    "aws_account_id":<a href ="gettingStarted.md#prepare-aws-account">"&lt;AWS_ACCOUNT_ID&gt;"</a>,
@@ -169,6 +171,39 @@ Configuration template:
       },
       "remove_unused_after_minutes":1
    }</code></pre>
+        </td>
+        <td valign="top">
+<i>Notes</i>
+<br/><br/>
+<b>url</b>: Unique endpoint for each service hosted_zone_id: Unique for each AWS account!
+<br/><br/>
+<b>volume_mappings</b>: optional 
+<br/><br/>
+<b>run_args</b>: optional run arguments for service
+<br/><br/>
+<b>stack</b>: optional; default is latest Docker stack
+<br/><br/>
+<b>subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
+<br/><br/>
+<b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world
+<br/><br/>
+<b>CrossZone</b>: Allow ELBs to send traffic to other availability zones
+<br/><br/>
+<b>InstanceType</b>: optional; default t2.small
+<br/><br/>
+<b>MinSize</b>: optional; default 1
+<br/><br/>
+<b>MaxSize</b>: optional; default 4 for autoscaling
+<br/><br/>
+<b>EC2KeyName</b>: optional; enables ssh to your instance
+<br/><br/>
+<b>resources</b>: optional; <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">overrides or extra resources in the CloudFormation template</a>.
+<br/><br/>
+<b>files</b>: optional <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html#customize-containers-format-files">custom Elastic Beanstalk environment Packages, Sources, Files, Users, Groups, Commands, Container_commands, Services</a>
+        </td>
+    </tr>
+</table>
+
 
 > (Optional) If you have configured an ELB which exists separately from each environment, you should add an extra key at the top level of the JSON configuration:
 > <pre><code>"external_elb": {
