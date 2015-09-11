@@ -16,8 +16,9 @@ The environment has one change; the security groups which are allowed to talk to
 The DNS name set up by Route53 does not change behaviour; it still points to a new environment immediately after it becomes healthy. You may either keep this (it will always point at the latest release), and point another DNS entry at the external load balancer, or update the Route53 entry to always point at the new release.
 
 To update the Route53 entry:
- - Disable the current weighted entry for your DNS entry (tagged with the name "ionroller"), by setting its weight to zero.
  - Add a new entry (with weighted routing) with a non-zero weight, as an ALIAS to the external load balancer.
+
+Because the entry created and updated by ION-Roller has a weight of 0, it will now be ignored for DNS address selection.
 
 ## Traffic migration
 When the new environment becomes healthy, traffic can then be moved from the old environment to the new environment. The traffic is actually moved instance-by-instance, as old instances are unregistered from the ELB, and new instances are added.

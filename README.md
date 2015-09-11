@@ -17,11 +17,17 @@ ION-Roller is a service (API, web app and CLI tool) that leverages Amazon’s El
  - Deployment configuration management (and history tracking)
  - ‘Testing in production’ easy to implement
 
-For a more thorough explanation of motivation and the concepts behind ION-Roller check [InfoQ article] (http://www.infoq.com/articles/gilt-deploying-microservices-aws).
 
 ```bash
 ionroller release my-service 0.0.1
 ```
+
+### Check out the [demo](https://drive.google.com/file/d/0B4LFRaB4aCbcRFRra0JOcUJnRVk/view?usp=sharing)!
+
+<a href ="https://drive.google.com/file/d/0B4LFRaB4aCbcRFRra0JOcUJnRVk/view?usp=sharing">![Demo](docs/images/ui-demo.png)</a>
+
+
+For a more thorough explanation of motivation and the concepts behind ION-Roller check [InfoQ article] (http://www.infoq.com/articles/gilt-deploying-microservices-aws).
 
 ----------
 
@@ -29,7 +35,6 @@ ionroller release my-service 0.0.1
  - [Setting up ION-Roller](docs/serviceSetup.md)
  - [Deploying services] (docs/deployingServices.md)
  - [Traffic redirection] (docs/trafficRedirection.md)
+ - [Troubleshooting](docs/troubleshooting.md)
  - [Development](docs/development.md)
  - [REST API - Apidoc](http://www.apidoc.me/gilt/ionroller-api)
-
-

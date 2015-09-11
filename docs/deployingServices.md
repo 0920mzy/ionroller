@@ -75,44 +75,45 @@ ionroller config my-service > my-service-config.json
 
 Configuration template:
 
-```json
+<pre>
+<code>
 {
-   "url":"<URL>", 
-   "hosted_zone_id":"<HOSTED_ZONE_ID>",
-   "aws_account_id":"<AWS_ACCOUNT_ID>",
-   "service_role":"<SERVICE_ROLE>",
-   "image":"<DOCKER_REPOSITORY>/<IMAGE>",
+   "url":<a href ="#decide-on-the-domain-for-your-service">"&lt;URL&gt;"</a>, 
+   "hosted_zone_id":<a href ="#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
+   "aws_account_id":<a href ="gettingStarted.md#prepare-aws-account">"&lt;AWS_ACCOUNT_ID&gt;"</a>,
+   "service_role":<a href ="#create-service_name-role">"&lt;SERVICE_ROLE&gt;"</a>,
+   "image":<a href ="gettingStarted.md#build-docker-image">"&lt;DOCKER_REPOSITORY&gt;/&lt;IMAGE&gt;"</a>,
    "port_mappings":[
       {
-         "internal":9000,
-         "external":9000
+         "internal":&lt;INTERNAL_PORT&gt;
+         "external":&lt;EXTERNAL_PORT&gt;
       }
    ],
    "volume_mappings":[],
    "run_args":["-DtestProperty=HelloWorld"],
    "eb":{
-      "deployment_bucket":"<DEPLOYMENT_BUCKET>",
-      "stack":"64bit Amazon Linux 2015.03 v1.4.3 running Docker 1.6.2",
-      "settings":[
+      "deployment_bucket":<a href ="#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
+      <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html">"stack"</a>:"64bit Amazon Linux 2015.03 v2.0.0 running Docker 1.6.2",
+      <a href ="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html">"settings"</a>:[
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"VPCId",
-            "Value":"<VPC_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;VPC_ID&gt;"</a>
          },
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"Subnets",
-            "Value":"<SUBNET_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SUBNET_ID&gt;"</a>
          },
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"ELBSubnets",
-            "Value":"<SUBNET_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SUBNET_ID&gt;"</a>
          },
          {
             "Namespace":"aws:autoscaling:launchconfiguration",
             "OptionName":"SecurityGroups",
-            "Value":"<SECURITY_GROUP_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SECURITY_GROUP_ID&gt;"</a>
          },
          {
             "Namespace":"aws:ec2:vpc",
@@ -122,7 +123,7 @@ Configuration template:
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"ELBScheme",
-            "Value":"internal"
+            "Value":"public"
          },
          {
             "Namespace":"aws:elb:loadbalancer",
@@ -132,7 +133,7 @@ Configuration template:
          {
             "Namespace":"aws:autoscaling:launchconfiguration",
             "OptionName":"InstanceType",
-            "Value":"t2.medium"
+            "Value":<a href="https://aws.amazon.com/ec2/instance-types/">"t2.medium"</a>
          },
          {
             "Namespace":"aws:autoscaling:asg",
@@ -147,32 +148,42 @@ Configuration template:
          {
             "Namespace":"aws:autoscaling:launchconfiguration",
             "OptionName":"EC2KeyName",
-            "Value":"<KEYNAME>"
+            "Value":<a href ="#create-ssh-keys-to-enable-logging-in-to-the-amazon-ec2-instances">"&lt;KEYNAME&gt;"</a>
           }
       ],
-      "resources": {
-            "<RESOURCE_ID>":{
-              "Type":"<CLOUDFORMATION_TYPE>",
+      <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-resources.html">"resources"</a>: {
+            "&lt;RESOURCE_ID&gt;":{
+              "Type":"&lt;CLOUDFORMATION_TYPE&gt;",
               "Properties":{
-                "<PROPERTY_NAME1>":"<PROPERTY_VALUE1>",
-                "<PROPERTY_NAME2>":"<PROPERTY_VALUE2>"
+                "&lt;PROPERTY_NAME1&gt;":"&lt;PROPERTY_VALUE1&gt;",
+                "&lt;PROPERTY_NAME2&gt;":"&lt;PROPERTY_VALUE2&gt;"
               },
             },     
           },
       },
+      <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html#customize-containers-format-files">"files"</a>: {
+            "&lt;TARGET_FILE_LOCATION_ON_DISK&gt;": {
+                "owner": "&lt;OWNER&gt;",
+                "mode": "&lt;MODE&gt;",
+                "content": "&lt;CONTENT&gt;",
+                "group": "&lt;GROUP&gt;"
+            }
+      },
       "remove_unused_after_minutes":1
    }
-```
+</code>
+</pre>
 
 > (Optional) If you have configured an ELB which exists separately from each environment, you should add an extra key at the top level of the JSON configuration:
-> ```
+> <pre>
+> <code>
 >    "external_elb": {
->      "name": "<ELB_NAME>",
->      "security_group": "<SECURITY_GROUP_OF_ELB_INSTANCES>",
->      "rollout_delay_minutes": <MINUTES_BETWEEN_TRAFFIC_INCREMENTS>
+>      "name": <a href="#optional-set-up-an-external-load-balancer-for-more-control-over-traffic-migration">"&lt;ELB_NAME&gt;"</a>,
+>      "security_group": <a href="#optional-set-up-an-external-load-balancer-for-more-control-over-traffic-migration">"&lt;SECURITY_GROUP_OF_ELB_INSTANCES&gt;"</a>,
+>      "rollout_delay_minutes": <a href="#optional-set-up-an-external-load-balancer-for-more-control-over-traffic-migration"> &lt;MINUTES_BETWEEN_TRAFFIC_INCREMENTS&gt;</a>
 >    }
-> ```
-> 
+> </code>
+> </pre>
 > You can find a list of the security groups used by the ELB in the EC2 console:
 > 
 > [AWS] (https://console.aws.amazon.com/) -> EC2 -> Load Balancers -> Select load balancer -> Security
