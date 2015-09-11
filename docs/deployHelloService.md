@@ -24,12 +24,27 @@ Fill required values and save config to hello-world-config.json.
         "-Dpidfile.path=/dev/null"
     ],
     "eb": {
-        "deployment_bucket":<a href ="deployingServices.md#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,,
+        "deployment_bucket":<a href ="deployingServices.md#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
         "settings": [
             {
                 "Namespace": "aws:ec2:vpc",
                 "OptionName": "ELBScheme",
-                "Value": "public"
+                "Value": "external"
+            },
+            {
+                "Namespace": "aws:ec2:vpc",
+                "OptionName": "AssociatePublicIpAddress",
+                "Value": "true"
+            },
+            {
+                "Namespace": "aws:ec2:vpc",
+                "OptionName": "Subnets",
+                "Value": <a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SUBNET_ID&gt;"</a>
+            },
+            {
+                "Namespace": "aws:ec2:vpc",
+                "OptionName": "ELBSubnets",
+                "Value": <a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SUBNET_ID&gt;"</a>
             }
         ]
     },
