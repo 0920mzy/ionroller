@@ -53,7 +53,7 @@ ionroller setup
 
 Deploy ION-Roller with ION-Roller CLI (so meta... ;-) ). 
 
-First add configuration of your ION-Roller service to DynamoDB.
+First create the configuration for your ION-Roller service.
 
 Fill all required values in the configuration template below and save it as ionroller-config.json.
 
@@ -140,17 +140,21 @@ Fill all required values in the configuration template below and save it as ionr
    }
 ```
 
-
 ```bash
-ionroller set_config ionroller ionroller-config.json
+ionroller setup ionroller-config.json
 ```
 
-Then trigger actual deployment:
+This will set up the appropriate role, policy details, and add the ION-Roller configuration into DynamoDB.
+
+Then trigger an actual deployment using the "emergency release" tool, as we do not yet have a running environment:
 
 ```bash
-ionroller release ionroller <IONROLLER_VERSION>
+ionroller release ionroller <IONROLLER_VERSION> --emergency_deploy
 ```
+
 \<IONROLLER_VERSION\> matches the latest [ION-Roller Docker Image tag] (https://hub.docker.com/r/giltouroboros/ionroller/tags/).
+
+You will have to manually set the DNS entry (add a weighted DNS entry to the Route53 zone, with weight 0, and set ID "ionroller". We plan to improve the process for releasing the service itself in future.
 
 Point ION-Roller CLI to ION-Roller service:
 
