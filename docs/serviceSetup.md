@@ -141,7 +141,7 @@ Fill all required values in the configuration template below and save it as ionr
 ```
 
 ```bash
-ionroller setup ionroller-config.json
+ionroller setup /<PATH_TO_CONFIG>/ionroller-config.json
 ```
 
 This will set up the appropriate role, policy details, and add the ION-Roller configuration into DynamoDB.
