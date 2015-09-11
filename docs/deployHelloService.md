@@ -1,6 +1,7 @@
 # Deploy 'Hello World!' service 
 
 Source code: https://github.com/gilt/hello-world
+
 DockerHub: https://hub.docker.com/r/giltouroboros/hello-world
 
 ## Prepare configuration json
@@ -52,3 +53,4 @@ ionroller release hello-world 1.0.0
 Your service should be available at <a href ="deployingServices.md#decide-on-the-domain-for-your-service">"&lt;URL&gt;"</a>
 
 <img src="images/ui-hello.png"/>
+
