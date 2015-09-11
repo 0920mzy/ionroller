@@ -54,7 +54,7 @@ Fill required values and save config to hello-world-config.json.
 ## Add service config to ION-Roller
 
 ```bash
-ionroller set_config hello-world /<PATH_TO_CONFIG>/hello-world-config.json.json
+ionroller set_config hello-world /<PATH_TO_CONFIG>/hello-world-config.json
 ```
 
 ## Deploy
