@@ -35,7 +35,6 @@ For a more thorough explanation of motivation and the concepts behind ION-Roller
  - [Setting up ION-Roller](docs/serviceSetup.md)
  - [Deploying services] (docs/deployingServices.md)
  - [Traffic redirection] (docs/trafficRedirection.md)
+ - [Troubleshooting](docs/troubleshooting.md)
  - [Development](docs/development.md)
  - [REST API - Apidoc](http://www.apidoc.me/gilt/ionroller-api)
-
-
