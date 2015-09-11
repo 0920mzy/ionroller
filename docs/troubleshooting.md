@@ -21,7 +21,7 @@ To pull logs for your instance:
 
 [AWS] (https://console.aws.amazon.com/) -> ElasticBeanstalk -> \<YOUR-SERVICE\> -> Logs (right side panel)
 
-You can also find logs for your instance at:
+You can also find logs for your instance in S3 bucket:
 
 elasticbeanstalk-region-\<ACCOUNT_ID\>/resources/environments/logs/publish/\<ENVIRONMENT-ID\>/\<instance-ID\>
 
