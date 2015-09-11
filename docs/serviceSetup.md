@@ -44,13 +44,6 @@ Available commands:
   set_base_url             Set ionroller base URL
   set_client_update_url    Set ionroller CLI update URL
 ```
-
-Let ION-Roller create IAM role and DynamoDB tables required to run the service:
-
-```bash
-ionroller setup
-```
-
 Deploy ION-Roller with ION-Roller CLI (so meta... ;-) ). 
 
 First create the configuration for your ION-Roller service.
@@ -154,7 +147,13 @@ ionroller release ionroller <IONROLLER_VERSION> --emergency_deploy
 
 \<IONROLLER_VERSION\> matches the latest [ION-Roller Docker Image tag] (https://hub.docker.com/r/giltouroboros/ionroller/tags/).
 
-You will have to manually set the DNS entry (add a weighted DNS entry to the Route53 zone, with weight 0, and set ID "ionroller". We plan to improve the process for releasing the service itself in future.
+You will have to manually set the DNS entry (add a weighted DNS entry to the Route53 zone, with weight 0, and set ID "ionroller":
+
+[AWS] (https://console.aws.amazon.com/) -> Route53 -> Hosted Zones
+
+The url for your service should look like 
+ionroller.<DOMAIN_NAME>
+i.e: ionroller.tools.giltaws.com
 
 Point ION-Roller CLI to ION-Roller service:
 
