@@ -91,20 +91,25 @@ object Main extends TaskApp with StrictLogging {
     client.Services.getConfigsByServiceName(service, from, to).map({ sc => sc.map(_.timestamp) })
   }
 
-  def readStringFromFileOrStdin(file: Option[String]): Task[String] = {
+  def readStringFromFile(file: String): Task[String] = {
     Task.delay {
-      file match {
-        case Some(f) =>
-          val fileSource = scala.io.Source.fromFile(f)
-          val str = fileSource.mkString
-          fileSource.close()
-          str
-        case None =>
-          val inBuffer = new StringBuilder
-          Iterator.continually(Option(scala.io.StdIn.readLine())).takeWhile(in => in.isDefined).foreach(in => inBuffer.append(in.get))
-          inBuffer.mkString
-      }
+      val fileSource = scala.io.Source.fromFile(file)
+      val str = fileSource.mkString
+      fileSource.close()
+      str
     }
+  }
+
+  val readStringFromStdin: Task[String] = {
+    Task.delay {
+      val inBuffer = new StringBuilder
+      Iterator.continually(Option(scala.io.StdIn.readLine())).takeWhile(in => in.isDefined).foreach(in => inBuffer.append(in.get))
+      inBuffer.mkString
+    }
+  }
+
+  def readStringFromFileOrStdin(file: Option[String]): Task[String] = {
+    file.fold(readStringFromStdin)(readStringFromFile)
   }
 
   def setConfig(client: Client, service: String, file: Option[String]): Task[String] = {
