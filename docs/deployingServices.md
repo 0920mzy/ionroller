@@ -94,7 +94,10 @@ Configuration template:
       }
    ],
    "volume_mappings":[],
-   "run_args":["-DtestProperty=HelloWorld"],
+   "run_args":[
+      "-Dpidfile.path=/dev/null",
+      "-DtestProperty=HelloWorld"
+    ],
    "eb":{
       "deployment_bucket":<a href ="#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
       <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html">"stack"</a>:"64bit Amazon Linux 2015.03 v2.0.0 running Docker 1.6.2",
@@ -183,7 +186,7 @@ Configuration template:
 <br/><br/>
 <b>volume_mappings</b>: optional 
 <br/><br/>
-<b>run_args</b>: optional run arguments for service
+<b>run_args</b>: run arguments for service. <code>pidfile.path=/dev/null</code> is required for restarting Play apps withing Docker container.
 <br/><br/>
 <b>stack</b>: optional; default is latest Docker stack
 <br/><br/>
