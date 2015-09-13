@@ -415,7 +415,8 @@
         {
           "name": "settings",
           "type": "[option_setting]",
-          "description": "Elastic Beanstalk configuration option settings, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html"
+          "description": "Elastic Beanstalk configuration option settings, see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html",
+          "required": false
         },
         {
           "name": "resources",

@@ -125,7 +125,7 @@ object ApidocImplicits extends LowImplicits {
       ionroller.EBSConfiguration(
         m.deploymentBucket,
         m.stack.getOrElse(ConfigurationManager.defaultSolutionStack),
-        m.settings.toList.fromApidoc,
+        m.settings.getOrElse(Seq.empty).toList.fromApidoc,
         m.resources,
         m.packages,
         m.sources,
@@ -139,7 +139,7 @@ object ApidocImplicits extends LowImplicits {
     }
 
     def toApidoc(c: ionroller.EBSConfiguration): models.EbConfig = {
-      models.EbConfig(c.deploymentBucket, Some(c.solutionStack), c.envOptionSettings.toList.toApidoc, c.resources, c.packages, c.sources, c.files, c.users, c.groups, c.commands, c.containerCommands, c.services)
+      models.EbConfig(c.deploymentBucket, Some(c.solutionStack), Some(c.envOptionSettings.toList.toApidoc), c.resources, c.packages, c.sources, c.files, c.users, c.groups, c.commands, c.containerCommands, c.services)
     }
   }
 
