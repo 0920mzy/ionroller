@@ -35,6 +35,7 @@ It's recommended to wrap your head around:
  - [Amazon Virtual Private Cloud (Amazon VPC) and Subnets] (http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html) - especially for *production* deployments
  - [VPC details specific to Elastic Beanstalk](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo-vpc.html)
  - [Amazon EC2 Security Groups](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)
+ - [Hosted zones](http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/AboutHostedZones.html)
  
 ### Create S3 deployment bucket
 [AWS] (https://console.aws.amazon.com/) ->  S3 -> Create bucket 
