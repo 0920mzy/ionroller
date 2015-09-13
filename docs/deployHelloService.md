@@ -26,6 +26,11 @@ Fill required values and save config to hello-world-config.json.
     "eb": {
         "deployment_bucket":<a href ="deployingServices.md#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
         "settings": [
+           {
+               "Namespace":"aws:ec2:vpc",
+               "OptionName":"VPCId",
+               "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;VPC_ID&gt;"</a>
+            },
             {
                 "Namespace": "aws:ec2:vpc",
                 "OptionName": "ELBScheme",
