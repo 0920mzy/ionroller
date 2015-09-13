@@ -15,40 +15,6 @@ Attach policy: AmazonS3ReadOnlyAccess for the minimum required permissions
 
 *Think of all the resources that your service needs to access like DynamoDB, RDS (Postgres), etc...*
 
-### Create S3 deployment bucket
-[AWS] (https://console.aws.amazon.com/) ->  S3 -> Create bucket 
-
-or if you have [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html) installed
-
-`aws s3  mb s3://<DEPLOYMENT_BUCKET>`
-
-
-Make sure the bucket is in the same region as Elastic Beanstalk deployments. The default region to use is US Standard (or US East 1)
-
-### Enable pulling of images from Docker Registry
-Generate the [.dockercfg](https://github.com/docker/docker/blob/master/docs/sources/userguide/dockerrepos.md#account-creation-and-login) that will be used by Elastic Beanstalk to pull images from a Docker repository. *You don’t need a .dockercfg file if the specified Docker image is in a public repository.*
-
-Upload the .dockercfg to your deployment bucket:
-[AWS] (https://console.aws.amazon.com/) ->  S3  -> \<DEPLOYMENT_BUCKET\> -> Actions -> Upload
-
-or
-
-`aws s3 cp ~/.dockercfg s3://<DEPLOYMENT_BUCKET>`
-
-###  Decide on the domain for your service
-[AWS] (https://console.aws.amazon.com/) -> Route53 -> Hosted Zones
-
-The url for your service should look like 
-<SERVICE_NAME>.<DOMAIN_NAME>
-i.e: my-service.tools.giltaws.com
-
-*Note the  Hosted Zone ID for your domain.*
-
-###  Create SSH Keys to enable logging in to the Amazon EC2 instances
-[AWS] (https://console.aws.amazon.com/) -> EC2 -> Key Pairs -> Create a key pair
-
-As only one SSH key can be added for an EC2 instance, it’s recommended to create one SSH key for the team, and share it with team members.
-
 ### (Optional) Set up an external load balancer for more control over traffic migration
 [AWS] (https://console.aws.amazon.com/) -> EC2 -> Load Balancers -> Create Load Balancer
 
@@ -82,8 +48,8 @@ Configuration template:
     <tr>
         <td>
        <pre><code>{
-   "url":<a href ="#decide-on-the-domain-for-your-service">"&lt;URL&gt;"</a>, 
-   "hosted_zone_id":<a href ="#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
+   "url":<a href ="gettingStarted.md#decide-on-the-domain-for-your-services">"&lt;URL&gt;"</a>, 
+   "hosted_zone_id":<a href ="gettingStarted.md#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
    "aws_account_id":<a href ="gettingStarted.md#prepare-aws-account">"&lt;AWS_ACCOUNT_ID&gt;"</a>,
    "service_role":<a href ="#create-service_name-role">"&lt;SERVICE_ROLE&gt;"</a>,
    "image":<a href ="gettingStarted.md#build-docker-image">"&lt;DOCKER_REPOSITORY&gt;/&lt;IMAGE&gt;"</a>,
@@ -99,7 +65,7 @@ Configuration template:
       "-DtestProperty=HelloWorld"
     ],
    "eb":{
-      "deployment_bucket":<a href ="#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
+      "deployment_bucket":<a href ="gettingStarted.md#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
       <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html">"stack"</a>:"64bit Amazon Linux 2015.03 v2.0.0 running Docker 1.6.2",
       <a href ="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html">"settings"</a>:[
          {
@@ -155,7 +121,7 @@ Configuration template:
          {
             "Namespace":"aws:autoscaling:launchconfiguration",
             "OptionName":"EC2KeyName",
-            "Value":<a href ="#create-ssh-keys-to-enable-logging-in-to-the-amazon-ec2-instances">"&lt;KEYNAME&gt;"</a>
+            "Value":<a href ="gettingStarted.md#create-ssh-keys-to-enable-logging-in-to-the-amazon-ec2-instances">"&lt;KEYNAME&gt;"</a>
           }
       ],
       <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-resources.html">"resources"</a>: {
