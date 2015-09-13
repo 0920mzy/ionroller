@@ -5,7 +5,7 @@ import com.amazonaws.auth.policy.actions.{SecurityTokenServiceActions, DynamoDBv
 import com.amazonaws.services.dynamodbv2.document.Table
 import com.amazonaws.services.identitymanagement.{AmazonIdentityManagementClient, AmazonIdentityManagement}
 import com.amazonaws.services.identitymanagement.model._
-import com.gilt.ionroller.api.v0.models.ServiceConfig
+import com.gilt.ionroller.api.v1.models.ServiceConfig
 import ionroller.{ApidocImplicits, TimelineConfiguration}
 import ionroller.aws.Dynamo
 import scala.collection.JavaConverters._

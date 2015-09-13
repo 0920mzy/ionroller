@@ -3,9 +3,9 @@ package ionroller.cmd
 import java.io.{FileWriter, File}
 import java.net.{MalformedURLException, URL}
 
-import com.gilt.ionroller.api.v0.Client
-import com.gilt.ionroller.api.v0.errors.FailedRequest
-import com.gilt.ionroller.api.v0.models.{Release, Service, ServiceConfig}
+import com.gilt.ionroller.api.v1.Client
+import com.gilt.ionroller.api.v1.errors.FailedRequest
+import com.gilt.ionroller.api.v1.models.{Release, Service, ServiceConfig}
 import com.ning.http.client.{AsyncCompletionHandler, AsyncHttpClient, AsyncHttpClientConfig, Response}
 import com.typesafe.scalalogging.StrictLogging
 import ionroller._
@@ -16,7 +16,7 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import play.api.libs.json.{JsValue, Json}
 
-import com.gilt.ionroller.api.v0.models.json.{jsonReadsIonrollerAPIServiceConfig => serviceConfigReads}
+import com.gilt.ionroller.api.v1.models.json.{jsonReadsIonrollerAPIServiceConfig => serviceConfigReads}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -316,7 +316,7 @@ object Main extends TaskApp with StrictLogging {
     case CmdConfig(service, timestamp) =>
       getConfig(client, service, timestamp) map {
         case None => println("No such service.")
-        case Some(c) => println(Json.prettyPrint(Json.toJson(c)(com.gilt.ionroller.api.v0.models.json.jsonWritesIonrollerAPIServiceConfig)))
+        case Some(c) => println(Json.prettyPrint(Json.toJson(c)(com.gilt.ionroller.api.v1.models.json.jsonWritesIonrollerAPIServiceConfig)))
       }
 
     case CmdConfigs(service, from, to) =>

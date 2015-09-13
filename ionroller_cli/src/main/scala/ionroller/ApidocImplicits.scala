@@ -1,7 +1,7 @@
 package ionroller
 
 import com.amazonaws.services.elasticbeanstalk.model.ConfigurationOptionSetting
-import com.gilt.ionroller.api.v0.models
+import com.gilt.ionroller.api.v1.models
 import org.joda.time.DateTime
 
 import scala.concurrent.duration._

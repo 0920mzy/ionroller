@@ -1,8 +1,8 @@
 package controllers
 
 import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome
-import com.gilt.ionroller.api.v0.models
-import com.gilt.ionroller.api.v0.models.json._
+import com.gilt.ionroller.api.v1.models
+import com.gilt.ionroller.api.v1.models.json._
 import com.typesafe.scalalogging.StrictLogging
 import controllers.ApidocImplicits._
 import ionroller._

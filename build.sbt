@@ -74,7 +74,7 @@ lazy val www = project
   .settings(
     name in Docker := "ionroller",
     normalizedName := "ionroller",
-    routesImport += "com.gilt.ionroller.api.v0.Bindables._",
+    routesImport += "com.gilt.ionroller.api.v1.Bindables._",
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "2.2.4" % "test"
     )
