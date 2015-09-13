@@ -21,9 +21,11 @@ Follow the steps to set up [AWS Command Line Interface](http://docs.aws.amazon.c
  - [Installing the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
  - [Configuring the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
-*Make sure you have privileges to create tables in DynamoDB and create IAM roles.*
+**Make sure you have privileges to create tables in DynamoDB, create IAM roles and S3 buckets.**
 
-## Minimum Viable AWS Knowledge 
+**Note the  AWS Account ID for your domain.**
+
+### Minimum Viable AWS Knowledge 
 
 ION-Roller will do a lot of work on your behalf, however you still need to understand the underlying AWS mechanisms. Also, you can fully customise yor ION-Roller deployment via [ElasticBeanstalk Options] (http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html).
 
@@ -34,3 +36,36 @@ It's recommended to wrap your head around:
  - [VPC details specific to Elastic Beanstalk](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo-vpc.html)
  - [Amazon EC2 Security Groups](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)
  
+### Create S3 deployment bucket
+[AWS] (https://console.aws.amazon.com/) ->  S3 -> Create bucket 
+
+or if you have [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html) installed
+
+`aws s3  mb s3://<DEPLOYMENT_BUCKET>`
+
+
+Make sure the bucket is in the same region as Elastic Beanstalk deployments. The default region to use is US Standard (or US East 1)
+
+### Enable pulling of images from Docker Registry
+Generate the [.dockercfg](https://github.com/docker/docker/blob/master/docs/sources/userguide/dockerrepos.md#account-creation-and-login) that will be used by Elastic Beanstalk to pull images from a Docker repository. **You don’t need a .dockercfg file if the specified Docker image is in a public repository.**
+
+Upload the .dockercfg to your deployment bucket:
+[AWS] (https://console.aws.amazon.com/) ->  S3  -> \<DEPLOYMENT_BUCKET\> -> Actions -> Upload
+
+or
+
+`aws s3 cp ~/.dockercfg s3://<DEPLOYMENT_BUCKET>`
+
+###  Decide on the domain for your services
+[AWS] (https://console.aws.amazon.com/) -> Route53 -> Hosted Zones
+
+The url for your service should look like 
+<SERVICE_NAME>.<DOMAIN_NAME>
+i.e: my-service.tools.giltaws.com
+
+**Note the  Hosted Zone ID for your domain.**
+
+### (Optional)  Create SSH Keys to enable logging in to the Amazon EC2 instances
+[AWS] (https://console.aws.amazon.com/) -> EC2 -> Key Pairs -> Create a key pair
+
+As only one SSH key can be added for an EC2 instance, it’s recommended to create one SSH key for the team, and share it with team members.
