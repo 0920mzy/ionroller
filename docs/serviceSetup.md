@@ -133,8 +133,6 @@ Fill all required values in the configuration template below and save it as ionr
 <br/><br/>
 <b>subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
 <br/><br/>
-<b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world. Default: internal
-<br/><br/>
 <b>CrossZone</b>: Allow ELBs to send traffic to other availability zones
 <br/><br/>
 <b>InstanceType</b>: optional; default t2.small
