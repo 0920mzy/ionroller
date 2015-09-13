@@ -46,7 +46,8 @@ or if you have [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-cha
 
 Make sure the bucket is in the same region as Elastic Beanstalk deployments. The default region to use is US Standard (or US East 1)
 
-### Enable pulling of images from Docker Registry
+**Enable pulling of images from Docker Registry**
+
 Generate the [.dockercfg](https://github.com/docker/docker/blob/master/docs/sources/userguide/dockerrepos.md#account-creation-and-login) that will be used by Elastic Beanstalk to pull images from a Docker repository. **You don’t need a .dockercfg file if the specified Docker image is in a public repository.**
 
 Upload the .dockercfg to your deployment bucket:
