@@ -7,7 +7,9 @@ DockerHub: https://hub.docker.com/r/giltouroboros/hello-world
 ## Prepare configuration json
 
 Fill required values and save config to hello-world-config.json.
-
+<table cellpadding="10">
+    <tr>
+        <td>
 <pre><code>{
     "url":<a href ="deployingServices.md#decide-on-the-domain-for-your-service">"&lt;URL&gt;"</a>, 
     "hosted_zone_id":<a href ="deployingServices.md#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
@@ -28,7 +30,18 @@ Fill required values and save config to hello-world-config.json.
         "settings": []
     },
     "remove_unused_after_minutes": 1
-}</code></pre>
+}</code></pre> </td>
+        <td valign="top">
+<i>Notes</i>
+<br/><br/>
+<b>url</b>: Unique endpoint for each service hosted_zone_id: Unique for each AWS account!
+<br/><br/>
+<b>run_args</b>: run arguments for service.<br/><code>pidfile.path=/dev/null</code><br/>is required for restarting Play apps withing Docker container.
+<br/><br/>
+<b>remove_unused_after_minutes</b>: optional; default 60min       
+        </td>
+    </tr>
+</table>
 
 ## Add service config to ION-Roller
 
@@ -51,7 +64,9 @@ Your service should be available at <a href ="deployingServices.md#decide-on-the
 
 If you want your url to be accesible only within private network you can play with security settings. Learn about [VPCs and Subnets](gettingStarted.md#minimum-viable-aws-knowledge). Then update your config to:
 
-<pre><code>{
+<table cellpadding="10">
+    <tr>
+        <td><pre><code>{
     "url":<a href ="deployingServices.md#decide-on-the-domain-for-your-service">"&lt;URL&gt;"</a>, 
     "hosted_zone_id":<a href ="deployingServices.md#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
     "aws_account_id":<a href ="deployingServices.mdgettingStarted.md#prepare-aws-account">"&lt;AWS_ACCOUNT_ID&gt;"</a>,
@@ -68,7 +83,7 @@ If you want your url to be accesible only within private network you can play wi
     ],
     "eb": {
         "deployment_bucket":<a href ="deployingServices.md#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
-        "settings": [
+         <a href ="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html">"settings"</a>: [
            {
                "Namespace":"aws:ec2:vpc",
                "OptionName":"VPCId",
@@ -78,11 +93,6 @@ If you want your url to be accesible only within private network you can play wi
                 "Namespace": "aws:ec2:vpc",
                 "OptionName": "ELBScheme",
                 "Value": "internal"
-            },
-            {
-                "Namespace": "aws:ec2:vpc",
-                "OptionName": "AssociatePublicIpAddress",
-                "Value": "true"
             },
             {
                 "Namespace": "aws:ec2:vpc",
@@ -97,4 +107,19 @@ If you want your url to be accesible only within private network you can play wi
         ]
     },
     "remove_unused_after_minutes": 1
-}</code></pre>
+}</code></pre></td>
+        <td valign="top">
+<i>Notes</i>
+<br/><br/>
+<b>url</b>: Unique endpoint for each service hosted_zone_id: Unique for each AWS account!
+<br/><br/>
+<b>run_args</b>: run arguments for service.<br/><code>pidfile.path=/dev/null</code><br/>is required for restarting Play apps withing Docker container.
+<br/><br/>
+<b>subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
+<br/><br/>
+<b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world. Default: internal
+<br/><br/>
+<b>remove_unused_after_minutes</b>: optional; default 60min       
+        </td>
+    </tr>
+</table>
