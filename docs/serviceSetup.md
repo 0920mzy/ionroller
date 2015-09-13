@@ -52,11 +52,13 @@ Fill all required values in the configuration template below and save it as ionr
 
 **Configuration template for ION-Roller service**:
 
-```json
-{
-   "url":"ionroller.<YOUR_DOMAIN>", 
-   "hosted_zone_id":"<HOSTED_ZONE_ID>",
-   "aws_account_id":"<AWS_ACCOUNT_ID>",
+<table cellpadding="10">
+    <tr>
+        <td>
+       <pre><code>{
+   "url":<a href ="gettingStarted.md#decide-on-the-domain-for-your-services">"ionroller.&lt;YOUR_DOMAIN&gt;"</a>, 
+   "hosted_zone_id":<a href ="gettingStarted.md#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
+   "aws_account_id":<a href ="gettingStarted.md#prepare-aws-account">"&lt;AWS_ACCOUNT_ID&gt;"</a>,
    "service_role":"ionroller",
    "image":"giltouroboros/ionroller",
    "port_mappings":[
@@ -65,43 +67,38 @@ Fill all required values in the configuration template below and save it as ionr
          "external":9000
       }
    ],
-   "volume_mappings":[],
    "run_args":[
         "-Dpidfile.path=/dev/null",
         "-Dionroller.modify-environments-whitelist=ALL",
-        "-Dionroller.modify-environments-blacklist=ionroller"],
+        "-Dionroller.modify-environments-blacklist=ionroller"
+   ],
    "eb":{
-      "deployment_bucket":"<DEPLOYMENT_BUCKET>",
-      "settings":[
+      "deployment_bucket":<a href ="gettingStarted.md#create-s3-deployment-bucket">"&lt;DEPLOYMENT_BUCKET&gt;"</a>,
+      <a href ="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html">"settings"</a>:[
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"VPCId",
-            "Value":"<VPC_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;VPC_ID&gt;"</a>
          },
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"Subnets",
-            "Value":"<SUBNET_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SUBNET_ID&gt;"</a>
          },
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"ELBSubnets",
-            "Value":"<SUBNET_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SUBNET_ID&gt;"</a>
          },
          {
             "Namespace":"aws:autoscaling:launchconfiguration",
             "OptionName":"SecurityGroups",
-            "Value":"<SECURITY_GROUP_ID>"
+            "Value":<a href ="gettingStarted.md#minimum-viable-aws-knowledge">"&lt;SECURITY_GROUP_ID&gt;"</a>
          },
          {
             "Namespace":"aws:ec2:vpc",
             "OptionName":"AssociatePublicIpAddress",
             "Value":"true"
-         },
-         {
-            "Namespace":"aws:ec2:vpc",
-            "OptionName":"ELBScheme",
-            "Value":"internal"
          },
          {
             "Namespace":"aws:elb:loadbalancer",
@@ -111,12 +108,7 @@ Fill all required values in the configuration template below and save it as ionr
          {
             "Namespace":"aws:autoscaling:launchconfiguration",
             "OptionName":"InstanceType",
-            "Value":"t2.micro"
-         },
-         {
-            "Namespace":"aws:autoscaling:asg",
-            "OptionName":"MinSize",
-            "Value":"1"
+            "Value":<a href="https://aws.amazon.com/ec2/instance-types/">"t2.micro"</a>
          },
          {
             "Namespace":"aws:autoscaling:asg",
@@ -126,12 +118,35 @@ Fill all required values in the configuration template below and save it as ionr
          {
             "Namespace":"aws:autoscaling:launchconfiguration",
             "OptionName":"EC2KeyName",
-            "Value":"<KEYNAME>"
+            "Value":<a href ="gettingStarted.md#create-ssh-keys-to-enable-logging-in-to-the-amazon-ec2-instances">"&lt;KEYNAME&gt;"</a>
           }
       ],
       "remove_unused_after_minutes":0
-   }
-```
+   }</code></pre>
+        </td>
+        <td valign="top">
+<i>Notes</i>
+<br/><br/>
+<b>url</b>: Unique endpoint for each service hosted_zone_id: Unique for each AWS account!
+<br/><br/>
+<b>run_args</b>: run arguments for service.<br/><code>pidfile.path=/dev/null</code><br/>is required for restarting Play apps withing Docker container.
+<br/><br/>
+<b>subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
+<br/><br/>
+<b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world. Default: internal
+<br/><br/>
+<b>CrossZone</b>: Allow ELBs to send traffic to other availability zones
+<br/><br/>
+<b>InstanceType</b>: optional; default t2.small
+<br/><br/>
+<b>MaxSize</b>: must be set to 1 for ionroller
+<br/><br/>
+<b>EC2KeyName</b>: optional; enables ssh to your instance
+<br/><br/>
+<b>remove_unused_after_minutes</b>: set to 0 for ionroller service
+        </td>
+    </tr>
+</table>
 
 ```bash
 ionroller setup /<PATH_TO_CONFIG>/ionroller-config.json
