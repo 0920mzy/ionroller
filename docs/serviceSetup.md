@@ -121,7 +121,7 @@ Fill all required values in the configuration template below and save it as ionr
 <br/><br/>
 <b>run_args</b>: run arguments for service.<br/><code>pidfile.path=/dev/null</code><br/>is required for restarting Play apps withing Docker container.<br/><code>Dionroller.modify-environments-whitelist</code><br/> is a comma separated list of environments that ION-Roller can modify or ALL for all environments,<br/><code>ionroller.modify-environments-blacklist=ionroller</code><br/> - ION-Roller should not modify itself. Updates of ION-Roller service are done via *emergency-deployment* mechanism.
 <br/><br/>
-<b>subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
+<b>Subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
 <br/><br/>
 <b>InstanceType</b>: optional; default t2.small
 <br/><br/>
