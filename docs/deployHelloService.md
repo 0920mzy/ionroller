@@ -115,6 +115,8 @@ If you want your url to be accesible only within private network you can play wi
 <br/><br/>
 <b>run_args</b>: run arguments for service.<br/><code>pidfile.path=/dev/null</code><br/>is required for restarting Play apps withing Docker container.
 <br/><br/>
+<b>VPCId</b>: optional; you don't need VPC ID if you specify a subnet in the VPC
+<br/><br/>
 <b>Subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
 <br/><br/>
 <b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world. Default: internal
