@@ -156,7 +156,7 @@ Configuration template:
 <br/><br/>
 <b>stack</b>: optional; default is latest Docker stack
 <br/><br/>
-<b>subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
+<b>Subnets</b>: There should be a Subnet for each ELBSubnet, with matching availability zones (in the standard cases, the value of Subnets equals that of ELBSubnets)
 <br/><br/>
 <b>ELBScheme</b>: private - only connectable from internal VPCs; internal - only connectable from a trusted IP, i.e. VPN, offices etc.; public - the world. Default: internal
 <br/><br/>
