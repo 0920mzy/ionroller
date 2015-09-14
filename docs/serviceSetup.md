@@ -183,6 +183,12 @@ ION-Roller web UI should be available at **\<YOUR_IONROLLER_SERVICE_URL\>**:
 
 ![UI events](images/ui-3.png)
 
+## Setting update URL for command-line client
+
+The `ionroller update` command needs a location to download the latest version of the client from.
+You may supply a URL to your own builds, or you can use the one available from this project at
+https://s3.amazonaws.com/ionroller-cli/install
+
 # Cross-account deployments
 
 ION-Roller can deploy services to another AWS accounts. 
