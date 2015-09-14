@@ -57,7 +57,7 @@ Fill all required values in the configuration template below and save it as ionr
         <td>
        <pre><code>{
    "url":<a href ="gettingStarted.md#decide-on-the-domain-for-your-services">"ionroller.&lt;YOUR_DOMAIN&gt;"</a>, 
-   "hosted_zone_id":<a href ="gettingStarted.md#decide-on-the-domain-for-your-service">"&lt;HOSTED_ZONE_ID&gt;"</a>,
+   "hosted_zone_id":<a href ="gettingStarted.md#decide-on-the-domain-for-your-services">"&lt;HOSTED_ZONE_ID&gt;"</a>,
    "aws_account_id":<a href ="gettingStarted.md#prepare-aws-account">"&lt;AWS_ACCOUNT_ID&gt;"</a>,
    "service_role":"ionroller",
    "image":"<a href="https://hub.docker.com/r/giltouroboros/ionroller/">giltouroboros/ionroller</a>",
