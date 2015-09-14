@@ -1,12 +1,12 @@
 # Setting up ION-Roller service and ION-Roller CLI
 
-Install ION-Roller CLI
+## Install ION-Roller CLI
 
 ```bash
 curl -s https://s3.amazonaws.com/ionroller-cli/install | sh
 ```
 
-Test that ION-Roller CLI works properly:
+## Test that ION-Roller CLI works properly:
 
 ```bash
 ionroller 
@@ -44,7 +44,8 @@ Available commands:
   set_base_url             Set ionroller base URL
   set_client_update_url    Set ionroller CLI update URL
 ```
-Deploy ION-Roller with ION-Roller CLI (so meta... ;-) ). 
+
+## Deploy ION-Roller with ION-Roller CLI (so meta... ;-) ). 
 
 First create the configuration for your ION-Roller service.
 
@@ -153,16 +154,15 @@ You will have to manually set the DNS entry (add a weighted DNS entry to the Rou
 [AWS] (https://console.aws.amazon.com/) -> Route53 -> Hosted Zones
 
 The url for your service should look like 
-ionroller.<DOMAIN_NAME>
-i.e: ionroller.tools.giltaws.com
+ionroller.&lt;DOMAIN_NAME&gt;
 
-Point ION-Roller CLI to ION-Roller service:
+## Point ION-Roller CLI to ION-Roller service:
 
 ```bash
 ionroller set_base_url <YOUR_IONROLLER_SERVICE_URL>
 ```
 
-Test that ION-Roller CLI works properly:
+## Test that ION-Roller CLI works properly:
 
 ```bash
 ionroller current ionroller
