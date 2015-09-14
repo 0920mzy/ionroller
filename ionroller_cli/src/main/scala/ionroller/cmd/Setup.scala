@@ -62,7 +62,7 @@ object Setup {
     }
   }
 
-  def createExtraPolicyForService(policyName: String, accountId: Long, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
+  def createExtraPolicyForService(policyName: String, accountId: String, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
     Kleisli { client: AmazonIdentityManagement =>
       val dynamoResources = tables.map(t => new com.amazonaws.auth.policy.Resource(s"arn:aws:dynamodb:us-east-1:$accountId:table/$t"))
       val dynamoStatement = new Statement(Statement.Effect.Allow).withActions(DynamoDBv2Actions.AllDynamoDBv2Actions).withResources(dynamoResources: _*)
@@ -75,7 +75,7 @@ object Setup {
     }
   }
 
-  def getOrCreateExtraPolicyForService(policyName: String, accountId: Long, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
+  def getOrCreateExtraPolicyForService(policyName: String, accountId: String, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
     getExtraPolicyForService(policyName) flatMap {
       case None => createExtraPolicyForService(policyName, accountId, tables)
       case Some(policy) => Kleisli { _ => Task.now(policy) }
@@ -196,7 +196,7 @@ object Setup {
     stateTable <- setupStateTable(tables)
     identityClient <- Task.delay(new AmazonIdentityManagementClient())
     userArn <- getUserArn(identityClient)
-    accountId <- Task.delay(userArn.split(":")(4).toLong)
+    accountId <- Task.delay(userArn.split(":")(4))
     role <- getOrCreateIonrollerRole("ionroller", userArn).run(identityClient)
     extraPolicy <- getOrCreateExtraPolicyForService("IONRollerExtraPolicy", accountId, List(Dynamo.defaultConfigTable, Dynamo.defaultEventTable, Dynamo.defaultStateTable))(identityClient)
     _ <- addPermissionsToRole("ionroller", extraPolicy.getArn)(identityClient)
