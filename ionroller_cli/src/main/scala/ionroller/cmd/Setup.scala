@@ -25,23 +25,23 @@ object Setup {
     }
   }
 
-  def setupEventTable(curTables: Set[String]): Task[Option[Table]] = {
+  def setupOrGetEventTable(curTables: Set[String]): Task[Table] = {
     if (!curTables.contains(Dynamo.defaultEventTable)) {
       println("Setting up events table.")
-      Dynamo.createEventsTable(None).map(Option.apply)
+      Dynamo.createEventsTable(None)
     } else {
       println("Events table exists.")
-      Task.now(None)
+      Dynamo.eventTable(None)
     }
   }
 
-  def setupStateTable(curTables: Set[String]): Task[Option[Table]] = {
+  def setupOrGetStateTable(curTables: Set[String]): Task[Table] = {
     if (!curTables.contains(Dynamo.defaultStateTable)) {
       println("Setting up state table.")
-      Dynamo.createStateTable(None).map(Option.apply)
+      Dynamo.createStateTable(None)
     } else {
       println("State table exists.")
-      Task.now(None)
+      Dynamo.stateTable(None)
     }
   }
 
@@ -62,9 +62,9 @@ object Setup {
     }
   }
 
-  def createExtraPolicyForService(policyName: String, accountId: String, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
+  def createExtraPolicyForService(policyName: String, accountId: String, tables: List[Table]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
     Kleisli { client: AmazonIdentityManagement =>
-      val dynamoResources = tables.map(t => new com.amazonaws.auth.policy.Resource(s"arn:aws:dynamodb:us-east-1:$accountId:table/$t"))
+      val dynamoResources = tables.map(t => new com.amazonaws.auth.policy.Resource(t.describe.getTableArn))
       val dynamoStatement = new Statement(Statement.Effect.Allow).withActions(DynamoDBv2Actions.AllDynamoDBv2Actions).withResources(dynamoResources: _*)
       val stsStatement = new Statement(Statement.Effect.Allow).withActions(SecurityTokenServiceActions.AssumeRole).withResources(new com.amazonaws.auth.policy.Resource("*"))
 
@@ -75,7 +75,7 @@ object Setup {
     }
   }
 
-  def getOrCreateExtraPolicyForService(policyName: String, accountId: String, tables: List[String]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
+  def getOrCreateExtraPolicyForService(policyName: String, accountId: String, tables: List[Table]): Kleisli[Task, AmazonIdentityManagement, com.amazonaws.services.identitymanagement.model.Policy] = {
     getExtraPolicyForService(policyName) flatMap {
       case None => createExtraPolicyForService(policyName, accountId, tables)
       case Some(policy) => Kleisli { _ => Task.now(policy) }
@@ -192,13 +192,13 @@ object Setup {
   def setup(config: ServiceConfig) = for {
     tables <- Dynamo.listTables
     configTable <- setupOrGetConfigTable(tables)
-    eventTable <- setupEventTable(tables)
-    stateTable <- setupStateTable(tables)
+    eventTable <- setupOrGetEventTable(tables)
+    stateTable <- setupOrGetStateTable(tables)
     identityClient <- Task.delay(new AmazonIdentityManagementClient())
     userArn <- getUserArn(identityClient)
     accountId <- Task.delay(userArn.split(":")(4))
     role <- getOrCreateIonrollerRole("ionroller", userArn).run(identityClient)
-    extraPolicy <- getOrCreateExtraPolicyForService("IONRollerExtraPolicy", accountId, List(Dynamo.defaultConfigTable, Dynamo.defaultEventTable, Dynamo.defaultStateTable))(identityClient)
+    extraPolicy <- getOrCreateExtraPolicyForService("IONRollerExtraPolicy", accountId, List(configTable, eventTable, stateTable))(identityClient)
     _ <- addPermissionsToRole("ionroller", extraPolicy.getArn)(identityClient)
     instanceProfile <- getOrCreateInstanceProfile("ionroller")(identityClient)
     _ <- maybeAddRoleToInstanceProfile(instanceProfile, role)(identityClient)
