@@ -481,7 +481,7 @@ object Main extends TaskApp with StrictLogging {
       headers <- getHeaders
       asyncHttpClient <- getAsyncHttpClient
       client <- getApidocClient(params, headers, asyncHttpClient, baseUrl)
-      runCommand <- run(client, asyncHttpClient, baseUrl)(params.cmd).onFinish(_ => Task.delay(asyncHttpClient.close()))
+      runCommand <- run(client, asyncHttpClient, baseUrl)(params.cmd).onFinish(_ => Task(asyncHttpClient.close()))
     } yield runCommand
   }
 }
