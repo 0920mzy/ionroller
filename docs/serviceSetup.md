@@ -196,6 +196,10 @@ The `ionroller update` command needs a location to download the latest version o
 You may supply a URL to your own builds, or you can use the one available from this project at
 https://s3.amazonaws.com/ionroller-cli/install
 
+```bash
+ionroller set_client_update_url https://s3.amazonaws.com/ionroller-cli/install
+```
+
 # Cross-account deployments
 
 ION-Roller can deploy services to another AWS accounts. 
