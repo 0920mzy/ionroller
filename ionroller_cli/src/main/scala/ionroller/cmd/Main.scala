@@ -248,7 +248,9 @@ object Main extends TaskApp with StrictLogging {
     } yield deployer
 
     deploymentTask.run flatMap {
-      case Some(deploymentResult) => Task.delay(println(deploymentResult))
+      case Some(deploymentResult) =>
+        val message = "ION-Roller deployment has been triggered. Go to https://console.aws.amazon.com/elasticbeanstalk/ to check progress. Once complete set DNS in Route53"
+        Task.delay(println(message))
       case None => Task.delay(println("Configuration not found"))
     }
   }
