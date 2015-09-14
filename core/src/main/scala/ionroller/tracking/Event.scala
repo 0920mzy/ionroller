@@ -25,10 +25,6 @@ case object AttachedELB extends EventType
 
 case object DetachedELB extends EventType
 
-case object DeploymentCompleted extends EventType
-
-case object StartingNewDeployment extends EventType
-
 case object ReleaseRequestIgnored extends EventType
 
 case object RemovalListUpdated extends EventType

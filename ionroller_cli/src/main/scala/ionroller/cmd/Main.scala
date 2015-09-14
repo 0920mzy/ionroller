@@ -51,6 +51,12 @@ object Main extends TaskApp with StrictLogging {
     }
   }
 
+  def stopAfterRelease(v: JsValue): Boolean = {
+    val msg = (v \ "message").asOpt[String]
+    val str = (v \ "type").asOpt[String]
+    msg.fold(false)(_.contains("ERROR")) || str == "DetachedELB".some || str == "TrafficMoved".some || str == "CommandIgnoredEvent".some
+  }
+
   def release(client: Client, asyncClient: AsyncHttpClient, baseUrl: String, service: String, version: String, configTimestamp: Option[DateTime]): Task[Unit] = {
     scalaFutToTask(client.Services.postReleaseByServiceName(service, version, configTimestamp)) flatMap { from =>
       val params: Seq[(String, String)] = Seq(
@@ -58,10 +64,7 @@ object Main extends TaskApp with StrictLogging {
         "version" -> version,
         "from" -> from.toString
       )
-      statusUpdates(asyncClient, baseUrl, params, { j =>
-        val str = (j \ "type").asOpt[String]
-        str == "TrafficMoved".some || str == "CommandIgnoredEvent".some
-      })
+      statusUpdates(asyncClient, baseUrl, params, stopAfterRelease)
     }
   }
 
@@ -72,12 +75,7 @@ object Main extends TaskApp with StrictLogging {
         "version" -> version,
         "from" -> from.toString
       )
-      statusUpdates(asyncClient, baseUrl, params, { j =>
-        {
-          val str = (j \ "type").asOpt[String]
-          str == "TrafficMoved".some || str == "CommandIgnoredEvent".some
-        }
-      })
+      statusUpdates(asyncClient, baseUrl, params, stopAfterRelease)
     }
   }
 
