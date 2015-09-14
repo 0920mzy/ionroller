@@ -156,6 +156,8 @@ You will have to manually set the DNS entry (add a weighted DNS entry to the Rou
 The url for your service should look like 
 ionroller.&lt;DOMAIN_NAME&gt;
 
+Generally, the recommended type of entry to add is an A entry, configured as an ALIAS, pointing at the load balancer of the new environment. One way of finding the load balancer by looking in https://console.aws.amazon.com/ec2/v2/home?#LoadBalancers: for a load balancer with tags referring to the new environment.
+
 ## Point ION-Roller CLI to ION-Roller service:
 
 ```bash
