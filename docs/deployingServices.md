@@ -185,7 +185,7 @@ Configuration template:
 >      "name": <a href="#optional-set-up-an-external-load-balancer-for-more-control-over-traffic-migration">"&lt;ELB_NAME&gt;"</a>,
 >      "security_group": <a href="#optional-set-up-an-external-load-balancer-for-more-control-over-traffic-migration">"&lt;SECURITY_GROUP_OF_ELB_INSTANCES&gt;"</a>,
 >      "rollout_delay_minutes": <a href="#optional-set-up-an-external-load-balancer-for-more-control-over-traffic-migration"> &lt;MINUTES_BETWEEN_TRAFFIC_INCREMENTS&gt;</a>
->    }</code></pre>
+>}</code></pre>
 > You can find a list of the security groups used by the ELB in the EC2 console:
 > 
 > [AWS] (https://console.aws.amazon.com/) -> EC2 -> Load Balancers -> Select load balancer -> Security
