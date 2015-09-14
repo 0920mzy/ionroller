@@ -165,14 +165,21 @@ ionroller set_base_url <YOUR_IONROLLER_SERVICE_URL>
 ## Test that ION-Roller CLI works properly:
 
 ```bash
-ionroller current ionroller
+ionroller config ionroller
 ```
 
 should return current version of the service, i.e.
 
-```bash
-current: 0.0.124
-```
+<pre><code>
+{
+  "url" : "ionroller.nataliasdomain.org",
+  "hosted_zone_id" : "Z1QNH8SEPN9F2Z",
+  "aws_account_id" : "083638361534",
+  "service_role" : "ionroller",
+  "image" : "giltouroboros/ionroller"
+  ...
+}
+</code></pre>
 
 ION-Roller web UI should be available at **\<YOUR_IONROLLER_SERVICE_URL\>**:
 
