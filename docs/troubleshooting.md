@@ -41,6 +41,13 @@ You can also find logs for your instance in S3 bucket:
 
 elasticbeanstalk-region-\<ACCOUNT_ID\>/resources/environments/logs/publish/\<ENVIRONMENT-ID\>/\<instance-ID\>
 
+### Log file rotation
+
+Elastic Beanstalk rotates log files every hour. This is a useful default in most cases. If you wish your application
+to handle log file rotation instead, you should write your log files into a non-default logging directory.
+
+You could also modify the Elastic Beanstalk environment to remove the appropriate logrotate configuration at startup.
+
 ## Log into your instance
 Make sure your [SSH key is added to the instance](deployingServices.md#create-ssh-keys-to-enable-logging-in-to-the-amazon-ec2-instances).
 
