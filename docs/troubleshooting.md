@@ -99,3 +99,23 @@ Service logs are available at
 ```bash
 /opt/docker/logs
 ```
+
+## Deploying without a running ION-Roller service
+
+The ION-Roller service manages the full lifecycle of setting up environments, waiting for them to become healthy, moving traffic, tearing down the old instance, etc.
+
+In the event that the service becomes unavailable for any reason, we have implemented a so-called "emergency deployment"
+feature in the command line client. If your user has appropriate API permissions, it will be able to create a new release
+using your current configuration.
+
+Use it with
+```bash
+ionroller release <SERVICE> <VERSION> --emergency_deploy
+```
+
+This will create an Elastic Beanstalk release which will start up normally.
+
+However, as the ION-Roller service is not running, it will not have the usual workflow applied (DNS/traffic moves,
+etc.). You can create an override in DNS to point to this environment, by going to Route53 and adding a new
+weighted DNS entry for your release, with a non-zero weight (this will send all traffic to the new deployment
+instead of the old deployment).
