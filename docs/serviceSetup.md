@@ -113,7 +113,8 @@ Fill all required values in the configuration template below and save it as ionr
           }
       ],
       "remove_unused_after_minutes":0
-   }</code></pre>
+   }
+}</code></pre>
         </td>
         <td valign="top">
 <i>Notes</i>
