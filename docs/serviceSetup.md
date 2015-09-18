@@ -111,10 +111,10 @@ Fill all required values in the configuration template below and save it as ionr
             "OptionName":"EC2KeyName",
             "Value":<a href ="gettingStarted.md#create-ssh-keys-to-enable-logging-in-to-the-amazon-ec2-instances">"&lt;KEYNAME&gt;"</a>
           }
-      ],
-      "remove_unused_after_minutes":0
-   }
-}</code></pre>
+      ]
+    },
+    "remove_unused_after_minutes":0
+   }</code></pre>
         </td>
         <td valign="top">
 <i>Notes</i>
