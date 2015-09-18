@@ -141,9 +141,10 @@ Configuration template:
                 "content": "&lt;CONTENT&gt;",
                 "group": "&lt;GROUP&gt;"
             }
-      },
-      "remove_unused_after_minutes":1
-   }</code></pre>
+        },
+    },
+    "remove_unused_after_minutes":1
+}</code></pre>
         </td>
         <td valign="top">
 <i>Notes</i>
