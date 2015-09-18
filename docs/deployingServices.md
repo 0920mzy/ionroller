@@ -55,7 +55,7 @@ Configuration template:
    "image":<a href ="gettingStarted.md#build-docker-image">"&lt;DOCKER_REPOSITORY&gt;/&lt;IMAGE&gt;"</a>,
    "port_mappings":[
       {
-         "internal":&lt;INTERNAL_PORT&gt;
+         "internal":&lt;INTERNAL_PORT&gt;,
          "external":&lt;EXTERNAL_PORT&gt;
       }
    ],
@@ -141,7 +141,7 @@ Configuration template:
                 "content": "&lt;CONTENT&gt;",
                 "group": "&lt;GROUP&gt;"
             }
-        },
+        }
     },
     "remove_unused_after_minutes":1
 }</code></pre>
