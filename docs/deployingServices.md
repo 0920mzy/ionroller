@@ -16,9 +16,10 @@ Attach policy: AmazonS3ReadOnlyAccess for the minimum required permissions
 *Think of all the resources that your service needs to access like DynamoDB, RDS (Postgres), etc...*
 
 ### (Optional) Set up an external load balancer for more control over traffic migration
+
 [AWS] (https://console.aws.amazon.com/) -> EC2 -> Load Balancers -> Create Load Balancer
 
-You may (optionally) create a load balancer which exists independently from the Elastic Beanstalk environments, and will always point at the current release. After a successful rollout, traffic will be gradually moved from the old environment to the new environment.
+You may (optionally) create a load balancer which exists independently from the Elastic Beanstalk environments, and will always point at the current release. After a successful rollout, [traffic will be gradually moved from the old environment to the new environment](trafficRedirection.md).
 
 The load balancer should be set up in a VPC and subnet, with access to the EC2 instances that will be set up by the service. The health check should also be configured appropriately for your service.
 
@@ -27,6 +28,8 @@ You will also want to consider the "Connection Draining" setting for the load ba
 <img src="images/ec2-lb-1.png" width="600px" />
 
 <img src="images/ec2-lb-2.png" width="400px" />
+
+You also need to add a [new Route53 entry for this load balancer](trafficRedirection.md#dns-naming).
 
 ## Deploy 'hello-world' service 
 
