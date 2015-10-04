@@ -11,21 +11,7 @@ If you develop in Scala, install [sbt-native-packager](http://www.scala-sbt.org/
 
 Learn how to work with [Docker Registry](https://hub.docker.com/) ([user guide](https://github.com/docker/docker/blob/master/docs/sources/userguide/dockerrepos.md)), create an account and push your image.
 
-## Prepare AWS account
-
-ION-Roller CLI doesn't require AWS CLI to run. However AWS CLI comes in handy to configure AWS Security Credentials and to set ION-Roller service.
-
-Follow the steps to set up [AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html), especially 
-
- - [Sign Up for Amazon Web Services] (http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html#cli-signup)
- - [Installing the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
- - [Configuring the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
-
-**Make sure you have privileges to create tables in DynamoDB, create IAM roles and S3 buckets.**
-
-**Note the  AWS Account ID for your domain.**
-
-### Minimum Viable AWS Knowledge 
+## Minimum Viable AWS Knowledge 
 
 ION-Roller will do a lot of work on your behalf, however you still need to understand the underlying AWS mechanisms. Also, you can fully customise yor ION-Roller deployment via [ElasticBeanstalk Options] (http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html).
 
@@ -36,6 +22,21 @@ It's recommended to wrap your head around:
  - [VPC details specific to Elastic Beanstalk](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo-vpc.html)
  - [Amazon EC2 Security Groups](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)
  - [Hosted zones](http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/AboutHostedZones.html)
+ 
+## Prepare AWS account
+
+ION-Roller CLI doesn't require AWS CLI to run. However AWS CLI comes in handy to configure AWS Security Credentials and to set ION-Roller service.
+
+Follow the steps to set up [AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html), especially 
+
+ - [Sign Up for Amazon Web Services] (http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html#cli-signup)
+ - Create a new [IAM user](http://aws.amazon.com/iam/). Assuming a role is required for ION-Roller setup and roles may not be assumed by *root accounts*. Make sure this new IAM user has privileges to create tables in DynamoDB, create IAM roles and S3 buckets.
+ - [Installing the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
+ - [Configuring the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+
+
+
+**Note the  AWS Account ID for your domain.**
  
 ### Create S3 deployment bucket
 [AWS] (https://console.aws.amazon.com/) ->  S3 -> Create bucket 
