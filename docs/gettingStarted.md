@@ -30,7 +30,11 @@ ION-Roller CLI doesn't require AWS CLI to run. However AWS CLI comes in handy to
 Follow the steps to set up [AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html), especially 
 
  - [Sign Up for Amazon Web Services] (http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html#cli-signup)
- - Create a new [IAM user](http://aws.amazon.com/iam/). Assuming a role is required for ION-Roller setup and roles may not be assumed by *root accounts*. Make sure this new IAM user has privileges to create tables in DynamoDB, create IAM roles and S3 buckets.
+ - Create a new [IAM user](http://aws.amazon.com/iam/):
+   
+   [AWS] (https://console.aws.amazon.com/) -> Identity and Access Management -> Roles
+
+   Assuming a role is required for ION-Roller setup and roles may not be assumed by *root accounts*. Make sure this new IAM user has privileges to create tables in DynamoDB, create IAM roles and S3 buckets.
  - [Installing the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
  - [Configuring the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
