@@ -5,7 +5,7 @@ resolvers ++= Seq(
 )
 
 libraryDependencies  ++= Seq(
-  "com.amazonaws" % "aws-java-sdk-s3" % "1.10.12",
+  "com.amazonaws" % "aws-java-sdk-s3" % "1.10.68",
   "org.scalaz" %% "scalaz-concurrent" % "7.1.3"
 )
 
