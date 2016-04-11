@@ -1,7 +1,7 @@
 import scalariform.formatter.preferences._
 import com.typesafe.sbt.packager.docker._
 
-val awsSdkVersion = "1.10.12"
+val awsSdkVersion = "1.10.68"
 val awsSdkLibraries = Seq(
   "autoscaling",
   "dynamodb",
